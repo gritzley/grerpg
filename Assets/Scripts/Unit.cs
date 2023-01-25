@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
+    [HideInInspector] public List<string> Tags;
     [HideInInspector] public Square Square;
     [SerializeField] private int Health = 100;
     private Battlefield Battlefield;

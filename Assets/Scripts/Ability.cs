@@ -1,22 +1,26 @@
-using System.Collections;
+using System;
+using System.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
-
-public abstract class Ability
+public abstract class Ability : MonoBehaviour
 {
-    private Battlefield Battlefield;
-
+    public Battlefield Battlefield;
     public Ability(Battlefield battlefield)
     {
         Battlefield = battlefield;
     }
-    // Abstract Methods
     public abstract void Activate();
 
-    // Protected Methods
-    protected async void Move()
+    protected async void MoveAUnit(int speed)
     {
-        Square square = await Battlefield.UserSelectSquare(s => s.transform.position.x > 0);
+        Func<Square, bool> hasUnit = s => s.Unit != null;
+        Unit unit = (await Battlefield.UserSelectSquare(hasUnit)).Unit;
+
+        Func<Square, bool> reachable = s => Battlefield.Distance(s, unit.Square) <= speed;
+        Square target = await Battlefield.UserSelectSquare(reachable);
+
+        unit.GoTo(target);
     }
 }

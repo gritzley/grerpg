@@ -10,30 +10,43 @@ public class Square : MonoBehaviour
 {
     [HideInInspector] public Unit Unit;
     public SimpleEventHandler EventHandler;
-    [SerializeField] private Color highlightColor;
-    private Color color;
+    [SerializeField] private Color highlightColor, softHighlightColor;
     private SpriteRenderer sr;
+    private List<Color> colorStack;
 
     private void Awake()
     {
         EventHandler = new SimpleEventHandler();
         sr = GetComponent<SpriteRenderer>();
-        color = sr.color;
+        colorStack = new List<Color>() { sr.color };
     }
     private void OnMouseDown() => EventHandler.Call("click");
 
     private void OnMouseEnter()
     {
-        Highlight(true);
+        AddColor(highlightColor);
     }
 
     private void OnMouseExit()
     {
-        Highlight(false);
+        RemoveColor(highlightColor);
     }
 
-    private void Highlight(bool on = true)
+    private void AddColor(Color c)
     {
-        sr.color = on ? highlightColor : color;
+        colorStack.Add(c);
+        sr.color = colorStack.Last();
+    }
+
+    private void RemoveColor(Color c)
+    {
+        colorStack.Remove(c);
+        sr.color = colorStack.Last();
+    }
+
+    public void Highlight(bool on = true)
+    {
+        if (on) AddColor(softHighlightColor);
+        else RemoveColor(softHighlightColor);
     }
 }

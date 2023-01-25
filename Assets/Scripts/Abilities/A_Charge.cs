@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveAbility : Ability
+public class A_Charge : Ability
 {
-    public MoveAbility(Battlefield b) : base(b) { }
+    public A_Charge(Battlefield b) : base(b) { }
     public override void Activate()
     {
-        Move();
+        MoveAUnit(3);
     }
 }

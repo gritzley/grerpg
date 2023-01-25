@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -7,11 +7,11 @@ using UnityEngine;
 public class Battlefield : MonoBehaviour
 {
     [SerializeField] private Vector2Int Dimensions = Vector2Int.one;
-    [SerializeField] private GameObject SquarePrefab, PlayerPrefab;
+    [SerializeField] private GameObject SquarePrefab, UnitPrefab;
 
     public Dictionary<(int, int), Square> Squares;
-
-    private Unit Player;
+    public (int, int) SquareID(Square square) => Squares.Where(e => e.Value == square).First().Key;
+    public List<Square> GetSquares(Func<Square, bool> predicate) => Squares.Values.Where(predicate).ToList();
     private float FieldSize = 1.2f;
 
     // Getters for math stuff
@@ -24,18 +24,14 @@ public class Battlefield : MonoBehaviour
         // Create Squares
         BuildSquares();
 
-        // Spawn Player
-        Player = PlayerPrefab.GetComponent<Unit>().Spawn(this, Squares[(3,3)]);
-
-        // init player square selection task 
-
-        Test();
+        Instantiate(UnitPrefab).GetComponent<Unit>().GoTo(Squares[(3, 3)]);
     }
 
-    private async void Test()
+    public int Distance(Square a, Square b)
     {
-        Square square = await UserSelectSquare();
-        Player.GoTo(square);
+        (int aX, int aY) = SquareID(a);
+        (int bX, int bY) = SquareID(b);
+        return Math.Abs(aX - bX) + Math.Abs(aY - bY);
     }
 
     // Initializes Squares, based on the dimensions.
@@ -54,31 +50,24 @@ public class Battlefield : MonoBehaviour
 
     }
 
-    TaskCompletionSource<Square> userSelection;
+    TaskCompletionSource<Square> squareSelection;
+    Func<Square, bool> squareSelectionRestriction = s => true;
     private Action SelectSquare(Square square) => delegate
     {
-        userSelection.TrySetResult(square);
+        if (!squareSelectionRestriction(square)) return;
+        GetSquares(squareSelectionRestriction).ForEach(s => s.Highlight(false));
+        squareSelection?.TrySetResult(square);
     };
     public async Task<Square> UserSelectSquare(Func<Square, bool> restriction = null)
     {
-        userSelection = new TaskCompletionSource<Square>();
-        return await userSelection.Task;
-    }
-    private IEnumerator ActivateSelection(Predicate<Square> restriction = null)
-    {
-        Debug.Log("Activating Listeners");
-        List<(Square, Action)> listeners = new List<(Square, Action)>();
-        foreach (Square square in Squares.Values)
+        squareSelectionRestriction = restriction != null ? restriction : s => true;
+        List<Square> ViableSquares = GetSquares(squareSelectionRestriction);
+        if (ViableSquares.Count > 1)
         {
-            if (restriction == null || restriction(square))
-            {
-                Action a = SelectSquare(square);
-                square.EventHandler["click"] += a;
-                listeners.Add((square, a));
-            }
+            ViableSquares.ForEach(s => s.Highlight(true));
+            squareSelection = new TaskCompletionSource<Square>();
+            return await squareSelection.Task;
         }
-        yield return null;
-        Debug.Log("Deactivating Listeners");
-        listeners.ForEach((e) => e.Item1.EventHandler["click"] -= e.Item2);
+        else return ViableSquares.First();
     }
 }
