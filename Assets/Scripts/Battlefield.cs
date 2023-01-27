@@ -7,7 +7,7 @@ using UnityEngine;
 public class Battlefield : MonoBehaviour
 {
     [SerializeField] private Vector2Int Dimensions = Vector2Int.one;
-    [SerializeField] private GameObject SquarePrefab, UnitPrefab;
+    [SerializeField] private GameObject SquarePrefab, UnitPrefab, CardPrefab;
 
     public Dictionary<(int, int), Square> Squares;
     public (int, int) SquareID(Square square) => Squares.Where(e => e.Value == square).First().Key;
@@ -25,6 +25,8 @@ public class Battlefield : MonoBehaviour
         BuildSquares();
 
         Instantiate(UnitPrefab).GetComponent<Unit>().GoTo(Squares[(3, 3)]);
+
+        BuildCards();
     }
 
     public int Distance(Square a, Square b)
@@ -47,7 +49,19 @@ public class Battlefield : MonoBehaviour
                 s.EventHandler["click"] += SelectSquare(s);
             }
         }
+    }
 
+    private void BuildCards()
+    {
+        BuildCard<A_Charge>(new Vector3(0, -5.5f, -1), Quaternion.identity).Name = "Charge";
+    }
+
+    private Card BuildCard<T>(Vector3 position, Quaternion rotation) where T : Ability
+    {
+        GameObject go = Instantiate(CardPrefab, position, rotation);
+        T ability = go.AddComponent<T>();
+        ability.Battlefield = this;
+        return go.GetComponent<Card>();
     }
 
     TaskCompletionSource<Square> squareSelection;

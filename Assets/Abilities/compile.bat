@@ -1,0 +1,1 @@
+antlr4 test.g4 -o src -Dlanguage=CSharp

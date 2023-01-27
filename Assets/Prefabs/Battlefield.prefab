@@ -46,3 +46,4 @@ MonoBehaviour:
   Dimensions: {x: 6, y: 6}
   SquarePrefab: {fileID: 9046541898216653518, guid: 1f471289cd7808a4fae7def35bec2da0, type: 3}
   UnitPrefab: {fileID: 1038010213737651218, guid: 2c0ce21411138b144a06c461d00c18cc, type: 3}
+  CardPrefab: {fileID: 7142433283970879349, guid: b04ec5a48344b404eaaacd6130fcc69c, type: 3}
