@@ -9,11 +9,11 @@ public class Battlefield : MonoBehaviour
     [SerializeField] private Vector2Int Dimensions = Vector2Int.one;
     [SerializeField] private GameObject SquarePrefab, UnitPrefab, CardPrefab;
 
+    private float FieldSize = 1.2f;
+    
     public Dictionary<(int, int), Square> Squares;
     public (int, int) SquareID(Square square) => Squares.Where(e => e.Value == square).First().Key;
     public List<Square> GetSquares(Func<Square, bool> predicate) => Squares.Values.Where(predicate).ToList();
-    private float FieldSize = 1.2f;
-
     // Getters for math stuff
     private Vector3 SquarePosition(int x, int y) => new Vector3(GetPosition1D(Dimensions.x, x), GetPosition1D(Dimensions.y, y), 0);
     private float GetPosition1D(int n, int i) => (n - 1) * (FieldSize / -2) + FieldSize * i;
@@ -46,7 +46,6 @@ public class Battlefield : MonoBehaviour
             {
                 Square s = Instantiate(SquarePrefab, SquarePosition(x, y), Quaternion.identity).GetComponent<Square>();
                 Squares.Add((x, y), s);
-                s.EventHandler["click"] += SelectSquare(s);
             }
         }
     }
@@ -64,24 +63,29 @@ public class Battlefield : MonoBehaviour
         return go.GetComponent<Card>();
     }
 
-    TaskCompletionSource<Square> squareSelection;
-    Func<Square, bool> squareSelectionRestriction = s => true;
-    private Action SelectSquare(Square square) => delegate
-    {
-        if (!squareSelectionRestriction(square)) return;
-        GetSquares(squareSelectionRestriction).ForEach(s => s.Highlight(false));
-        squareSelection?.TrySetResult(square);
-    };
     public async Task<Square> UserSelectSquare(Func<Square, bool> restriction = null)
     {
-        squareSelectionRestriction = restriction != null ? restriction : s => true;
-        List<Square> ViableSquares = GetSquares(squareSelectionRestriction);
-        if (ViableSquares.Count > 1)
-        {
-            ViableSquares.ForEach(s => s.Highlight(true));
-            squareSelection = new TaskCompletionSource<Square>();
-            return await squareSelection.Task;
-        }
-        else return ViableSquares.First();
+        // Get all squares that fit the fiven restriction
+        List<Square> ViableSquares = GetSquares(restriction ?? (s => true));
+
+        // If there is exactly one square that fits teh restriction, return it
+        if (ViableSquares.Count == 1) return ViableSquares.First();
+
+        // A TaskCompletionSource is given to each square. This way, each square can send a result to this task
+        TaskCompletionSource<Square> squareSelection = new TaskCompletionSource<Square>();
+
+        // Highlight viable squares and et the TaskCompletionSource
+        ViableSquares.ForEach(s => s.Highlight(true));
+        ViableSquares.ForEach(s => s.tcs = squareSelection);
+
+        // Wait for the user to click on a square, thus triggering a result
+        Square selectedSquare = await squareSelection.Task;
+
+        // Clean up viable squares
+        ViableSquares.ForEach(s => s.Highlight(false));
+        ViableSquares.ForEach(s => s.tcs = null);
+
+        // Return the selected Square
+        return selectedSquare;
     }
 }
