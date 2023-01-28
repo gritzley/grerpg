@@ -7,19 +7,41 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public List<Card> Cards;
+    [SerializeField] private Vector3 DeckPosition, YardPosition;
+     public List<Card> Deck, Cards, Yard;
     void Awake()
     {
-        BuildCards(new List<string> { "Charge", "Charge", "Charge", "Charge" });
+        BuildDeck(Enumerable.Repeat("Charge", 60).ToList());
     }
-    private void BuildCards(List<string> cardList)
+    private void BuildDeck(List<string> cardList)
     {
-        cardList.ForEach(n => Cards.Add(Card.Build(n)));
+        cardList.ForEach(n => { 
+            Card c = Card.Build(n);
+            c.transform.position = DeckPosition;
+            c.transform.rotation = Quaternion.Euler(0, 180, 0);
+            Deck.Add(c);
+        });
+    }
+    public async Task Draw(int n = 1)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            Cards.Add(Deck.First());
+            Deck.RemoveAt(0);
+            CalcHandPositions();
+            await Task.Delay(100);
+        }
+        return;
+    }
+    private void CalcHandPositions()
+    {
+        Debug.Log(Cards.Count);
         foreach ((Card card, int index) in Cards.Select((c, i) => (c, i)))
         {
+            LeanTween.cancel(card.gameObject);
             float offsetX = index - Cards.Count / 2.0f + 0.5f;
-            card.transform.position = new Vector3(offsetX * 2.0f, (float)Math.Pow(Math.Abs(offsetX), 2) * -0.2f - 5.5f, -1 - index);
-            card.transform.rotation = Quaternion.Euler(Vector3.back * offsetX * 10);
+            card.transform.LeanMove(new Vector3(offsetX, (float)Math.Pow(Math.Abs(offsetX), 2) * -0.1f - 5.0f, -1 - index), 0.1f);
+            card.transform.LeanRotate(Vector3.back * offsetX * 5, 0.1f);
         }
     }
     public async Task<Card> UserSelectCard(Func<Card, bool> restriction = null)
@@ -30,9 +52,14 @@ public class Player : MonoBehaviour
         // Edge Case returns
         if (ViableCards.Count == 0) return null;
 
+        // Create the TCS for card selection, which cards can use to finish the task
+        TaskCompletionSource<Card> tcs = new TaskCompletionSource<Card>();
+
+        // add listeners to card
         Queue<Action> muoseEnterActions = new Queue<Action>(Cards.Select(c =>
         {
             Action onMouseEnterEvent = () => StartCoroutine(HighlightCard(c, true));
+
             c.OnMouseEnterEvent += onMouseEnterEvent;
             return onMouseEnterEvent;
         }));
@@ -42,27 +69,35 @@ public class Player : MonoBehaviour
             c.OnMouseExitEvent += onMouseExitEvent;
             return onMouseExitEvent;
         }));
-
-        // Create the TCS for card selection, which cards can use to finish the task
-        TaskCompletionSource<Card> cardSelection = new TaskCompletionSource<Card>();
-        ViableCards.ForEach(c => c.tcs = cardSelection);
+        Queue<Action> mouseDownActions = new Queue<Action>(Cards.Select(c =>
+        {
+            Action onMouseDownEvent = () => tcs.TrySetResult(c);
+            c.OnMouseDownEvent += onMouseDownEvent;
+            return onMouseDownEvent;
+        }));
 
         // Wait for user selection
-        Card selectedCard = await cardSelection.Task;
+        Card selectedCard = await tcs.Task;
 
+        // Dehighlight card
         StartCoroutine(HighlightCard(selectedCard, false));
 
+        // Clean up cards
         Cards.ForEach(c => {
             c.OnMouseEnterEvent -= muoseEnterActions.Dequeue();
             c.OnMouseExitEvent -= mouseExitActions.Dequeue();
+            c.OnMouseDownEvent -= mouseDownActions.Dequeue();
         });
-
-        // Clean up the TCS
-        ViableCards.ForEach(c => c.tcs = null);
 
         return selectedCard;
     }
-
+    public void Discard(Card card)
+    {
+        card.gameObject.LeanMove(new Vector3(10, 0, 0), 0.3f);
+        Cards.Remove(card);
+        Yard.Add(card);
+        CalcHandPositions();
+    }
     private IEnumerator HighlightCard(Card card, bool on = true)
     {
         float delta = 0.06f * (on ? 1 : -1);

@@ -7,9 +7,8 @@ using TMPro;
 [RequireComponent(typeof(BoxCollider2D))]
 public class Card : MonoBehaviour
 {
-    [HideInInspector] public TaskCompletionSource<Card> tcs;
     [HideInInspector] public CardDefinition definition;
-    [HideInInspector] public event Action OnMouseEnterEvent, OnMouseExitEvent;
+    [HideInInspector] public event Action OnMouseEnterEvent, OnMouseExitEvent, OnMouseDownEvent;
     private string _name;
     public string Name
     {
@@ -20,11 +19,7 @@ public class Card : MonoBehaviour
             GetComponentInChildren<TMP_Text>().text = _name;
         }
     }
-    private void OnMouseDown()
-    {
-        tcs?.TrySetResult(this);
-    }
-
+    private void OnMouseDown() => OnMouseDownEvent?.Invoke();
     private void OnMouseEnter() => OnMouseEnterEvent?.Invoke();
     private void OnMouseExit() => OnMouseExitEvent?.Invoke();
 
