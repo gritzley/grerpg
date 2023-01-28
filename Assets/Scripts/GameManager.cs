@@ -1,14 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Battlefield))]
 public class GameManager : MonoBehaviour
 {
-    private Battlefield battlefield;
     void Start()
     {
-        battlefield = GetComponent<Battlefield>();
         Run();
     }
 
@@ -16,9 +12,8 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
-            Debug.Log(battlefield);
-            Card selectedCard = await battlefield.UserSelectCard();
-            await selectedCard.definition.Activate(battlefield);
+            Card selectedCard = await GetComponent<Player>().UserSelectCard();
+            await selectedCard.definition.Activate(GetComponent<Battlefield>());
         }
     }
 }

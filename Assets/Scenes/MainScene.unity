@@ -325,7 +325,36 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2989171270486843199, guid: 0f526bab57b238a45a88565d92d2dce7, type: 3}
       propertyPath: m_Name
-      value: Battlefield
+      value: GameManager
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f526bab57b238a45a88565d92d2dce7, type: 3}
+--- !u!1 &1202945838 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2989171270486843199, guid: 0f526bab57b238a45a88565d92d2dce7, type: 3}
+  m_PrefabInstance: {fileID: 1131313462}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1202945839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202945838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74d892e973905e04ca13fdadd4e1d1f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1202945840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202945838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8fd1aeab95ea1d4a86f9bc82ded9c52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
