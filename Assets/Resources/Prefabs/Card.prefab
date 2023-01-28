@@ -358,3 +358,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 253c382dbfab7f04bb37e8e2cdab1e1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  highlightFloatAmount: 0.6
+  highlightSpeed: 12
+  basePosition: {x: 0, y: 0, z: 0}
