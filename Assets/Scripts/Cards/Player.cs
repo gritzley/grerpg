@@ -8,19 +8,16 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private Vector3 DeckPosition, YardPosition;
-     public List<Card> Deck, Cards, Yard;
-    void Awake()
+    public List<Card> Deck, Cards, Yard;
+    public void BuildDeck(List<string> cardList)
     {
-        BuildDeck(Enumerable.Repeat("Charge", 60).ToList());
-    }
-    private void BuildDeck(List<string> cardList)
-    {
-        cardList.ForEach(n => { 
+        Deck = cardList.Select(n =>
+        {
             Card c = Card.Build(n);
             c.transform.position = DeckPosition;
             c.transform.rotation = Quaternion.Euler(0, 180, 0);
-            Deck.Add(c);
-        });
+            return c;
+        }).ToList();
     }
     public async Task Draw(int n = 1)
     {
@@ -33,9 +30,15 @@ public class Player : MonoBehaviour
         }
         return;
     }
+    public void Discard(Card card)
+    {
+        card.gameObject.LeanMove(new Vector3(10, 0, 0), 0.3f);
+        Cards.Remove(card);
+        Yard.Add(card);
+        CalcHandPositions();
+    }
     private void CalcHandPositions()
     {
-        Debug.Log(Cards.Count);
         foreach ((Card card, int index) in Cards.Select((c, i) => (c, i)))
         {
             LeanTween.cancel(card.gameObject);
@@ -90,13 +93,6 @@ public class Player : MonoBehaviour
         });
 
         return selectedCard;
-    }
-    public void Discard(Card card)
-    {
-        card.gameObject.LeanMove(new Vector3(10, 0, 0), 0.3f);
-        Cards.Remove(card);
-        Yard.Add(card);
-        CalcHandPositions();
     }
     private IEnumerator HighlightCard(Card card, bool on = true)
     {

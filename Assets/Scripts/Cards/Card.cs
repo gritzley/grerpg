@@ -1,14 +1,12 @@
 using System;
-using System.Collections;
-using System.Threading.Tasks;
 using UnityEngine;
 using TMPro;
 
 [RequireComponent(typeof(BoxCollider2D))]
 public class Card : MonoBehaviour
 {
-    [HideInInspector] public CardDefinition definition;
     [HideInInspector] public event Action OnMouseEnterEvent, OnMouseExitEvent, OnMouseDownEvent;
+    [HideInInspector] public Spell Spell;
     private string _name;
     public string Name
     {
@@ -22,15 +20,10 @@ public class Card : MonoBehaviour
     private void OnMouseDown() => OnMouseDownEvent?.Invoke();
     private void OnMouseEnter() => OnMouseEnterEvent?.Invoke();
     private void OnMouseExit() => OnMouseExitEvent?.Invoke();
-
     public static Card Build(string name)
     {
-        Type T = Type.GetType("CD_" + name);
-        if (T == null || !typeof(CardDefinition).IsAssignableFrom(T)) throw new Exception($"There is no card named {name}.");
-
-        CardDefinition cardDefinition = (CardDefinition)Activator.CreateInstance(T);
         Card card = Instantiate((GameObject)Resources.Load("prefabs/card")).GetComponent<Card>();
-        card.definition = cardDefinition;
+        card.Spell = Spell.CreateInstance(name);
         card.Name = name;
         return card;
     }

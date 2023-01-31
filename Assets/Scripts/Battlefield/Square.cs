@@ -1,6 +1,6 @@
+using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
@@ -8,9 +8,8 @@ using UnityEngine;
 public class Square : MonoBehaviour
 {
     [HideInInspector] public Unit Unit;
-    [HideInInspector] public TaskCompletionSource<Square> tcs;
-
     [SerializeField] private Color highlightColor, softHighlightColor;
+    [HideInInspector] public event Action OnMouseEnterEvent, OnMouseExitEvent, OnMouseDownEvent;
     private SpriteRenderer sr;
     private List<Color> colorStack;
 
@@ -18,18 +17,12 @@ public class Square : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
         colorStack = new List<Color>() { sr.color };
+        OnMouseEnterEvent += () => AddColor(highlightColor);
+        OnMouseExitEvent += () => RemoveColor(highlightColor);
     }
-    private void OnMouseDown() => tcs?.TrySetResult(this);
-
-    private void OnMouseEnter()
-    {
-        AddColor(highlightColor);
-    }
-
-    private void OnMouseExit()
-    {
-        RemoveColor(highlightColor);
-    }
+    private void OnMouseDown() => OnMouseDownEvent?.Invoke();
+    private void OnMouseEnter() => OnMouseEnterEvent?.Invoke();
+    private void OnMouseExit() => OnMouseExitEvent?.Invoke();
 
     private void AddColor(Color c)
     {

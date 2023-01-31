@@ -1,13 +1,12 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Unit : MonoBehaviour
+public abstract class Unit : MonoBehaviour
 {
     [HideInInspector] public List<string> Tags;
     [HideInInspector] public Square Square;
-    [SerializeField] private int Health = 100;
-    private Battlefield Battlefield;
+    private int Health = 100;
     public void GoTo(Square square)
     {
         if (Square != null) Square.Unit = null;
@@ -15,18 +14,17 @@ public class Unit : MonoBehaviour
         square.Unit = this;
         Square = square;
     }
-
     public void Damage(int amount)
     {
         Health -= amount;
-        if (Health <= 0) Destroy(gameObject);
     }
-
-    public Unit Spawn(Battlefield battlefield, Square startingSquare)
+    public static Unit Spawn(string name, Battlefield battlefield)
     {
-        Unit unit = Instantiate(gameObject).GetComponent<Unit>();
-        unit.Battlefield = battlefield;
-        unit.GoTo(startingSquare);
+        Type type = Type.GetType($"U_{name}");
+
+        if (type == null || !typeof(Unit).IsAssignableFrom(type)) throw new Exception($"There is no definition for a unit called {name}");
+
+        Unit unit = (Unit)Instantiate((GameObject)Resources.Load("prefabs/unit")).AddComponent(type);
         return unit;
     }
 }
