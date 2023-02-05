@@ -42,11 +42,11 @@ public class GameManager : MonoBehaviour
                 _player.Discard(card);
                 return;
             }
-            catch (NoValidSquareSelectionException _)
+            catch (NoValidSquareSelectionException)
             {
                 Debug.Log("Card could not be played, because there was no valid square to select.");
             }
-            catch (NoPlayableCardsException _)
+            catch (NoPlayableCardsException)
             {
                 Debug.Log("No more playable cards. Ending play.");
                 _running = false;
