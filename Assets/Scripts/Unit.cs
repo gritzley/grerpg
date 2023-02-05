@@ -9,7 +9,7 @@ public class Unit : MonoBehaviour
 {
     [HideInInspector] public List<string> Types;
     [HideInInspector] public Square Square;
-    [HideInInspector] public int Health = 100;
+    [HideInInspector] public int Health, Speed;
     [HideInInspector] public string Name, Description;
     public Unit Init(Battlefield battlefield, string name)
     {
@@ -23,8 +23,9 @@ public class Unit : MonoBehaviour
 
         _unitTree = parser.unit();
 
-        Types = _unitTree.unitType().Select(t => t.GetText()).ToList();
-        Health = intValue(_unitTree.INT());
+        Types = _unitTree.type().Select(t => t.GetText()).ToList();
+        Health = intValue(_unitTree.stats().INT(1));
+        Speed = intValue(_unitTree.stats().INT(0));
         Name = name;
         Description = unitDefinition.text;
 

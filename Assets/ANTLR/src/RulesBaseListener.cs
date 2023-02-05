@@ -96,29 +96,41 @@ public partial class RulesBaseListener : IRulesListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitUnit([NotNull] RulesParser.UnitContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="RulesParser.unitType"/>.
+	/// Enter a parse tree produced by <see cref="RulesParser.stats"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterUnitType([NotNull] RulesParser.UnitTypeContext context) { }
+	public virtual void EnterStats([NotNull] RulesParser.StatsContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="RulesParser.unitType"/>.
+	/// Exit a parse tree produced by <see cref="RulesParser.stats"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitUnitType([NotNull] RulesParser.UnitTypeContext context) { }
+	public virtual void ExitStats([NotNull] RulesParser.StatsContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="RulesParser.unitName"/>.
+	/// Enter a parse tree produced by <see cref="RulesParser.type"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterUnitName([NotNull] RulesParser.UnitNameContext context) { }
+	public virtual void EnterType([NotNull] RulesParser.TypeContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="RulesParser.unitName"/>.
+	/// Exit a parse tree produced by <see cref="RulesParser.type"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitUnitName([NotNull] RulesParser.UnitNameContext context) { }
+	public virtual void ExitType([NotNull] RulesParser.TypeContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RulesParser.name"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterName([NotNull] RulesParser.NameContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RulesParser.name"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitName([NotNull] RulesParser.NameContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RulesParser.unitDescription"/>.
 	/// <para>The default implementation does nothing.</para>

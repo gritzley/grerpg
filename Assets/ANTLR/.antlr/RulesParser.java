@@ -21,21 +21,21 @@ public class RulesParser extends Parser {
 		FlOAT=18, ONE=19, INT=20, ID=21, WS=22, NL=23;
 	public static final int
 		RULE_spell = 0, RULE_imperative = 1, RULE_moveUnit = 2, RULE_spawnUnit = 3, 
-		RULE_unit = 4, RULE_unitType = 5, RULE_unitName = 6, RULE_unitDescription = 7, 
-		RULE_unitBehaviour = 8, RULE_instruction = 9, RULE_action = 10, RULE_move = 11, 
-		RULE_direction = 12, RULE_directionUp = 13, RULE_directionDown = 14, RULE_directionLeft = 15, 
-		RULE_directionRight = 16, RULE_directionRandom = 17, RULE_targetUnit = 18, 
-		RULE_trigger = 19, RULE_startCombat = 20;
+		RULE_unit = 4, RULE_stats = 5, RULE_type = 6, RULE_name = 7, RULE_unitDescription = 8, 
+		RULE_unitBehaviour = 9, RULE_instruction = 10, RULE_action = 11, RULE_move = 12, 
+		RULE_direction = 13, RULE_directionUp = 14, RULE_directionDown = 15, RULE_directionLeft = 16, 
+		RULE_directionRight = 17, RULE_directionRandom = 18, RULE_targetUnit = 19, 
+		RULE_trigger = 20, RULE_startCombat = 21;
 	public static final String[] ruleNames = {
-		"spell", "imperative", "moveUnit", "spawnUnit", "unit", "unitType", "unitName", 
-		"unitDescription", "unitBehaviour", "instruction", "action", "move", "direction", 
-		"directionUp", "directionDown", "directionLeft", "directionRight", "directionRandom", 
-		"targetUnit", "trigger", "startCombat"
+		"spell", "imperative", "moveUnit", "spawnUnit", "unit", "stats", "type", 
+		"name", "unitDescription", "unitBehaviour", "instruction", "action", "move", 
+		"direction", "directionUp", "directionDown", "directionLeft", "directionRight", 
+		"directionRandom", "targetUnit", "trigger", "startCombat"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
 		null, "'Move a'", "'up to'", "'spaces.'", "'Summon'", "'a'", "'.'", "'-'", 
-		"'hp'", "'move'", "'steps'", "'step'", "'up'", "'down'", "'left'", "'right'", 
+		"'/'", "'move'", "'steps'", "'step'", "'up'", "'down'", "'left'", "'right'", 
 		"'in a random direction'", "'At the beginning of combat'", null, "'1 '"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
@@ -113,21 +113,21 @@ public class RulesParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(43); 
+			setState(45); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(42);
+				setState(44);
 				imperative();
 				}
 				}
-				setState(45); 
+				setState(47); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==T__0 || _la==T__3 );
-			setState(47);
+			setState(49);
 			match(EOF);
 			}
 		}
@@ -159,20 +159,20 @@ public class RulesParser extends Parser {
 		ImperativeContext _localctx = new ImperativeContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_imperative);
 		try {
-			setState(51);
+			setState(53);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__0:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(49);
+				setState(51);
 				moveUnit();
 				}
 				break;
 			case T__3:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(50);
+				setState(52);
 				spawnUnit();
 				}
 				break;
@@ -208,15 +208,15 @@ public class RulesParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(53);
-			match(T__0);
-			setState(54);
-			targetUnit();
 			setState(55);
-			match(T__1);
+			match(T__0);
 			setState(56);
-			match(INT);
+			targetUnit();
 			setState(57);
+			match(T__1);
+			setState(58);
+			match(INT);
+			setState(59);
 			match(T__2);
 			}
 		}
@@ -232,8 +232,8 @@ public class RulesParser extends Parser {
 	}
 
 	public static class SpawnUnitContext extends ParserRuleContext {
-		public UnitNameContext unitName() {
-			return getRuleContext(UnitNameContext.class,0);
+		public NameContext name() {
+			return getRuleContext(NameContext.class,0);
 		}
 		public TerminalNode INT() { return getToken(RulesParser.INT, 0); }
 		public SpawnUnitContext(ParserRuleContext parent, int invokingState) {
@@ -249,9 +249,9 @@ public class RulesParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(59);
+			setState(61);
 			match(T__3);
-			setState(60);
+			setState(62);
 			_la = _input.LA(1);
 			if ( !(_la==T__4 || _la==INT) ) {
 			_errHandler.recoverInline(this);
@@ -261,9 +261,9 @@ public class RulesParser extends Parser {
 				_errHandler.reportMatch(this);
 				consume();
 			}
-			setState(61);
-			unitName();
-			setState(62);
+			setState(63);
+			name();
+			setState(64);
 			match(T__5);
 			}
 		}
@@ -279,15 +279,18 @@ public class RulesParser extends Parser {
 	}
 
 	public static class UnitContext extends ParserRuleContext {
-		public TerminalNode INT() { return getToken(RulesParser.INT, 0); }
+		public StatsContext stats() {
+			return getRuleContext(StatsContext.class,0);
+		}
+		public TerminalNode NL() { return getToken(RulesParser.NL, 0); }
 		public UnitBehaviourContext unitBehaviour() {
 			return getRuleContext(UnitBehaviourContext.class,0);
 		}
-		public List<UnitTypeContext> unitType() {
-			return getRuleContexts(UnitTypeContext.class);
+		public List<TypeContext> type() {
+			return getRuleContexts(TypeContext.class);
 		}
-		public UnitTypeContext unitType(int i) {
-			return getRuleContext(UnitTypeContext.class,i);
+		public TypeContext type(int i) {
+			return getRuleContext(TypeContext.class,i);
 		}
 		public UnitContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -302,27 +305,27 @@ public class RulesParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(65); 
+			setState(67); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(64);
-				unitType();
+				setState(66);
+				type();
 				}
 				}
-				setState(67); 
+				setState(69); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==ID );
-			setState(69);
-			match(T__6);
-			setState(70);
-			match(INT);
 			setState(71);
-			match(T__7);
+			match(T__6);
 			setState(72);
+			stats();
+			setState(73);
+			match(NL);
+			setState(74);
 			unitBehaviour();
 			}
 		}
@@ -337,21 +340,57 @@ public class RulesParser extends Parser {
 		return _localctx;
 	}
 
-	public static class UnitTypeContext extends ParserRuleContext {
-		public TerminalNode ID() { return getToken(RulesParser.ID, 0); }
-		public UnitTypeContext(ParserRuleContext parent, int invokingState) {
+	public static class StatsContext extends ParserRuleContext {
+		public List<TerminalNode> INT() { return getTokens(RulesParser.INT); }
+		public TerminalNode INT(int i) {
+			return getToken(RulesParser.INT, i);
+		}
+		public StatsContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_unitType; }
+		@Override public int getRuleIndex() { return RULE_stats; }
 	}
 
-	public final UnitTypeContext unitType() throws RecognitionException {
-		UnitTypeContext _localctx = new UnitTypeContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_unitType);
+	public final StatsContext stats() throws RecognitionException {
+		StatsContext _localctx = new StatsContext(_ctx, getState());
+		enterRule(_localctx, 10, RULE_stats);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(74);
+			setState(76);
+			match(INT);
+			setState(77);
+			match(T__7);
+			setState(78);
+			match(INT);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class TypeContext extends ParserRuleContext {
+		public TerminalNode ID() { return getToken(RulesParser.ID, 0); }
+		public TypeContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_type; }
+	}
+
+	public final TypeContext type() throws RecognitionException {
+		TypeContext _localctx = new TypeContext(_ctx, getState());
+		enterRule(_localctx, 12, RULE_type);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(80);
 			match(ID);
 			}
 		}
@@ -366,35 +405,35 @@ public class RulesParser extends Parser {
 		return _localctx;
 	}
 
-	public static class UnitNameContext extends ParserRuleContext {
+	public static class NameContext extends ParserRuleContext {
 		public List<TerminalNode> ID() { return getTokens(RulesParser.ID); }
 		public TerminalNode ID(int i) {
 			return getToken(RulesParser.ID, i);
 		}
-		public UnitNameContext(ParserRuleContext parent, int invokingState) {
+		public NameContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_unitName; }
+		@Override public int getRuleIndex() { return RULE_name; }
 	}
 
-	public final UnitNameContext unitName() throws RecognitionException {
-		UnitNameContext _localctx = new UnitNameContext(_ctx, getState());
-		enterRule(_localctx, 12, RULE_unitName);
+	public final NameContext name() throws RecognitionException {
+		NameContext _localctx = new NameContext(_ctx, getState());
+		enterRule(_localctx, 14, RULE_name);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(77); 
+			setState(83); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(76);
+				setState(82);
 				match(ID);
 				}
 				}
-				setState(79); 
+				setState(85); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==ID );
@@ -412,11 +451,11 @@ public class RulesParser extends Parser {
 	}
 
 	public static class UnitDescriptionContext extends ParserRuleContext {
-		public List<UnitTypeContext> unitType() {
-			return getRuleContexts(UnitTypeContext.class);
+		public List<TypeContext> type() {
+			return getRuleContexts(TypeContext.class);
 		}
-		public UnitTypeContext unitType(int i) {
-			return getRuleContext(UnitTypeContext.class,i);
+		public TypeContext type(int i) {
+			return getRuleContext(TypeContext.class,i);
 		}
 		public UnitDescriptionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -426,22 +465,22 @@ public class RulesParser extends Parser {
 
 	public final UnitDescriptionContext unitDescription() throws RecognitionException {
 		UnitDescriptionContext _localctx = new UnitDescriptionContext(_ctx, getState());
-		enterRule(_localctx, 14, RULE_unitDescription);
+		enterRule(_localctx, 16, RULE_unitDescription);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(82); 
+			setState(88); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(81);
-				unitType();
+				setState(87);
+				type();
 				}
 				}
-				setState(84); 
+				setState(90); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==ID );
@@ -473,22 +512,22 @@ public class RulesParser extends Parser {
 
 	public final UnitBehaviourContext unitBehaviour() throws RecognitionException {
 		UnitBehaviourContext _localctx = new UnitBehaviourContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_unitBehaviour);
+		enterRule(_localctx, 18, RULE_unitBehaviour);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(87); 
+			setState(93); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(86);
+				setState(92);
 				instruction();
 				}
 				}
-				setState(89); 
+				setState(95); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==T__16 );
@@ -520,15 +559,15 @@ public class RulesParser extends Parser {
 
 	public final InstructionContext instruction() throws RecognitionException {
 		InstructionContext _localctx = new InstructionContext(_ctx, getState());
-		enterRule(_localctx, 18, RULE_instruction);
+		enterRule(_localctx, 20, RULE_instruction);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(91);
+			setState(97);
 			trigger();
-			setState(92);
+			setState(98);
 			action();
-			setState(93);
+			setState(99);
 			match(T__5);
 			}
 		}
@@ -555,11 +594,11 @@ public class RulesParser extends Parser {
 
 	public final ActionContext action() throws RecognitionException {
 		ActionContext _localctx = new ActionContext(_ctx, getState());
-		enterRule(_localctx, 20, RULE_action);
+		enterRule(_localctx, 22, RULE_action);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(95);
+			setState(101);
 			move();
 			}
 		}
@@ -588,34 +627,34 @@ public class RulesParser extends Parser {
 
 	public final MoveContext move() throws RecognitionException {
 		MoveContext _localctx = new MoveContext(_ctx, getState());
-		enterRule(_localctx, 22, RULE_move);
+		enterRule(_localctx, 24, RULE_move);
 		try {
-			setState(105);
+			setState(111);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(97);
+				setState(103);
 				match(T__8);
-				setState(98);
+				setState(104);
 				match(INT);
-				setState(99);
+				setState(105);
 				match(T__9);
-				setState(100);
+				setState(106);
 				direction();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(101);
+				setState(107);
 				match(T__8);
-				setState(102);
+				setState(108);
 				match(ONE);
-				setState(103);
+				setState(109);
 				match(T__10);
-				setState(104);
+				setState(110);
 				direction();
 				}
 				break;
@@ -656,43 +695,43 @@ public class RulesParser extends Parser {
 
 	public final DirectionContext direction() throws RecognitionException {
 		DirectionContext _localctx = new DirectionContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_direction);
+		enterRule(_localctx, 26, RULE_direction);
 		try {
-			setState(112);
+			setState(118);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__11:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(107);
+				setState(113);
 				directionUp();
 				}
 				break;
 			case T__12:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(108);
+				setState(114);
 				directionDown();
 				}
 				break;
 			case T__13:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(109);
+				setState(115);
 				directionLeft();
 				}
 				break;
 			case T__14:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(110);
+				setState(116);
 				directionRight();
 				}
 				break;
 			case T__15:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(111);
+				setState(117);
 				directionRandom();
 				}
 				break;
@@ -720,11 +759,11 @@ public class RulesParser extends Parser {
 
 	public final DirectionUpContext directionUp() throws RecognitionException {
 		DirectionUpContext _localctx = new DirectionUpContext(_ctx, getState());
-		enterRule(_localctx, 26, RULE_directionUp);
+		enterRule(_localctx, 28, RULE_directionUp);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(114);
+			setState(120);
 			match(T__11);
 			}
 		}
@@ -748,11 +787,11 @@ public class RulesParser extends Parser {
 
 	public final DirectionDownContext directionDown() throws RecognitionException {
 		DirectionDownContext _localctx = new DirectionDownContext(_ctx, getState());
-		enterRule(_localctx, 28, RULE_directionDown);
+		enterRule(_localctx, 30, RULE_directionDown);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(116);
+			setState(122);
 			match(T__12);
 			}
 		}
@@ -776,11 +815,11 @@ public class RulesParser extends Parser {
 
 	public final DirectionLeftContext directionLeft() throws RecognitionException {
 		DirectionLeftContext _localctx = new DirectionLeftContext(_ctx, getState());
-		enterRule(_localctx, 30, RULE_directionLeft);
+		enterRule(_localctx, 32, RULE_directionLeft);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(118);
+			setState(124);
 			match(T__13);
 			}
 		}
@@ -804,11 +843,11 @@ public class RulesParser extends Parser {
 
 	public final DirectionRightContext directionRight() throws RecognitionException {
 		DirectionRightContext _localctx = new DirectionRightContext(_ctx, getState());
-		enterRule(_localctx, 32, RULE_directionRight);
+		enterRule(_localctx, 34, RULE_directionRight);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(120);
+			setState(126);
 			match(T__14);
 			}
 		}
@@ -832,11 +871,11 @@ public class RulesParser extends Parser {
 
 	public final DirectionRandomContext directionRandom() throws RecognitionException {
 		DirectionRandomContext _localctx = new DirectionRandomContext(_ctx, getState());
-		enterRule(_localctx, 34, RULE_directionRandom);
+		enterRule(_localctx, 36, RULE_directionRandom);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(122);
+			setState(128);
 			match(T__15);
 			}
 		}
@@ -863,11 +902,11 @@ public class RulesParser extends Parser {
 
 	public final TargetUnitContext targetUnit() throws RecognitionException {
 		TargetUnitContext _localctx = new TargetUnitContext(_ctx, getState());
-		enterRule(_localctx, 36, RULE_targetUnit);
+		enterRule(_localctx, 38, RULE_targetUnit);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(124);
+			setState(130);
 			unitDescription();
 			}
 		}
@@ -894,11 +933,11 @@ public class RulesParser extends Parser {
 
 	public final TriggerContext trigger() throws RecognitionException {
 		TriggerContext _localctx = new TriggerContext(_ctx, getState());
-		enterRule(_localctx, 38, RULE_trigger);
+		enterRule(_localctx, 40, RULE_trigger);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(126);
+			setState(132);
 			startCombat();
 			}
 		}
@@ -922,11 +961,11 @@ public class RulesParser extends Parser {
 
 	public final StartCombatContext startCombat() throws RecognitionException {
 		StartCombatContext _localctx = new StartCombatContext(_ctx, getState());
-		enterRule(_localctx, 40, RULE_startCombat);
+		enterRule(_localctx, 42, RULE_startCombat);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(128);
+			setState(134);
 			match(T__16);
 			}
 		}
@@ -942,37 +981,39 @@ public class RulesParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\31\u0085\4\2\t\2"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\31\u008b\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
-		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\3\2\6\2.\n\2\r\2\16\2/\3\2\3"+
-		"\2\3\3\3\3\5\3\66\n\3\3\4\3\4\3\4\3\4\3\4\3\4\3\5\3\5\3\5\3\5\3\5\3\6"+
-		"\6\6D\n\6\r\6\16\6E\3\6\3\6\3\6\3\6\3\6\3\7\3\7\3\b\6\bP\n\b\r\b\16\b"+
-		"Q\3\t\6\tU\n\t\r\t\16\tV\3\n\6\nZ\n\n\r\n\16\n[\3\13\3\13\3\13\3\13\3"+
-		"\f\3\f\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\5\rl\n\r\3\16\3\16\3\16\3\16\3"+
-		"\16\5\16s\n\16\3\17\3\17\3\20\3\20\3\21\3\21\3\22\3\22\3\23\3\23\3\24"+
-		"\3\24\3\25\3\25\3\26\3\26\3\26\2\2\27\2\4\6\b\n\f\16\20\22\24\26\30\32"+
-		"\34\36 \"$&(*\2\3\4\2\7\7\26\26\2z\2-\3\2\2\2\4\65\3\2\2\2\6\67\3\2\2"+
-		"\2\b=\3\2\2\2\nC\3\2\2\2\fL\3\2\2\2\16O\3\2\2\2\20T\3\2\2\2\22Y\3\2\2"+
-		"\2\24]\3\2\2\2\26a\3\2\2\2\30k\3\2\2\2\32r\3\2\2\2\34t\3\2\2\2\36v\3\2"+
-		"\2\2 x\3\2\2\2\"z\3\2\2\2$|\3\2\2\2&~\3\2\2\2(\u0080\3\2\2\2*\u0082\3"+
-		"\2\2\2,.\5\4\3\2-,\3\2\2\2./\3\2\2\2/-\3\2\2\2/\60\3\2\2\2\60\61\3\2\2"+
-		"\2\61\62\7\2\2\3\62\3\3\2\2\2\63\66\5\6\4\2\64\66\5\b\5\2\65\63\3\2\2"+
-		"\2\65\64\3\2\2\2\66\5\3\2\2\2\678\7\3\2\289\5&\24\29:\7\4\2\2:;\7\26\2"+
-		"\2;<\7\5\2\2<\7\3\2\2\2=>\7\6\2\2>?\t\2\2\2?@\5\16\b\2@A\7\b\2\2A\t\3"+
-		"\2\2\2BD\5\f\7\2CB\3\2\2\2DE\3\2\2\2EC\3\2\2\2EF\3\2\2\2FG\3\2\2\2GH\7"+
-		"\t\2\2HI\7\26\2\2IJ\7\n\2\2JK\5\22\n\2K\13\3\2\2\2LM\7\27\2\2M\r\3\2\2"+
-		"\2NP\7\27\2\2ON\3\2\2\2PQ\3\2\2\2QO\3\2\2\2QR\3\2\2\2R\17\3\2\2\2SU\5"+
-		"\f\7\2TS\3\2\2\2UV\3\2\2\2VT\3\2\2\2VW\3\2\2\2W\21\3\2\2\2XZ\5\24\13\2"+
-		"YX\3\2\2\2Z[\3\2\2\2[Y\3\2\2\2[\\\3\2\2\2\\\23\3\2\2\2]^\5(\25\2^_\5\26"+
-		"\f\2_`\7\b\2\2`\25\3\2\2\2ab\5\30\r\2b\27\3\2\2\2cd\7\13\2\2de\7\26\2"+
-		"\2ef\7\f\2\2fl\5\32\16\2gh\7\13\2\2hi\7\25\2\2ij\7\r\2\2jl\5\32\16\2k"+
-		"c\3\2\2\2kg\3\2\2\2l\31\3\2\2\2ms\5\34\17\2ns\5\36\20\2os\5 \21\2ps\5"+
-		"\"\22\2qs\5$\23\2rm\3\2\2\2rn\3\2\2\2ro\3\2\2\2rp\3\2\2\2rq\3\2\2\2s\33"+
-		"\3\2\2\2tu\7\16\2\2u\35\3\2\2\2vw\7\17\2\2w\37\3\2\2\2xy\7\20\2\2y!\3"+
-		"\2\2\2z{\7\21\2\2{#\3\2\2\2|}\7\22\2\2}%\3\2\2\2~\177\5\20\t\2\177\'\3"+
-		"\2\2\2\u0080\u0081\5*\26\2\u0081)\3\2\2\2\u0082\u0083\7\23\2\2\u0083+"+
-		"\3\2\2\2\n/\65EQV[kr";
+		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\3\2\6\2\60\n\2\r\2"+
+		"\16\2\61\3\2\3\2\3\3\3\3\5\38\n\3\3\4\3\4\3\4\3\4\3\4\3\4\3\5\3\5\3\5"+
+		"\3\5\3\5\3\6\6\6F\n\6\r\6\16\6G\3\6\3\6\3\6\3\6\3\6\3\7\3\7\3\7\3\7\3"+
+		"\b\3\b\3\t\6\tV\n\t\r\t\16\tW\3\n\6\n[\n\n\r\n\16\n\\\3\13\6\13`\n\13"+
+		"\r\13\16\13a\3\f\3\f\3\f\3\f\3\r\3\r\3\16\3\16\3\16\3\16\3\16\3\16\3\16"+
+		"\3\16\5\16r\n\16\3\17\3\17\3\17\3\17\3\17\5\17y\n\17\3\20\3\20\3\21\3"+
+		"\21\3\22\3\22\3\23\3\23\3\24\3\24\3\25\3\25\3\26\3\26\3\27\3\27\3\27\2"+
+		"\2\30\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,\2\3\4\2\7\7\26\26"+
+		"\2\177\2/\3\2\2\2\4\67\3\2\2\2\69\3\2\2\2\b?\3\2\2\2\nE\3\2\2\2\fN\3\2"+
+		"\2\2\16R\3\2\2\2\20U\3\2\2\2\22Z\3\2\2\2\24_\3\2\2\2\26c\3\2\2\2\30g\3"+
+		"\2\2\2\32q\3\2\2\2\34x\3\2\2\2\36z\3\2\2\2 |\3\2\2\2\"~\3\2\2\2$\u0080"+
+		"\3\2\2\2&\u0082\3\2\2\2(\u0084\3\2\2\2*\u0086\3\2\2\2,\u0088\3\2\2\2."+
+		"\60\5\4\3\2/.\3\2\2\2\60\61\3\2\2\2\61/\3\2\2\2\61\62\3\2\2\2\62\63\3"+
+		"\2\2\2\63\64\7\2\2\3\64\3\3\2\2\2\658\5\6\4\2\668\5\b\5\2\67\65\3\2\2"+
+		"\2\67\66\3\2\2\28\5\3\2\2\29:\7\3\2\2:;\5(\25\2;<\7\4\2\2<=\7\26\2\2="+
+		">\7\5\2\2>\7\3\2\2\2?@\7\6\2\2@A\t\2\2\2AB\5\20\t\2BC\7\b\2\2C\t\3\2\2"+
+		"\2DF\5\16\b\2ED\3\2\2\2FG\3\2\2\2GE\3\2\2\2GH\3\2\2\2HI\3\2\2\2IJ\7\t"+
+		"\2\2JK\5\f\7\2KL\7\31\2\2LM\5\24\13\2M\13\3\2\2\2NO\7\26\2\2OP\7\n\2\2"+
+		"PQ\7\26\2\2Q\r\3\2\2\2RS\7\27\2\2S\17\3\2\2\2TV\7\27\2\2UT\3\2\2\2VW\3"+
+		"\2\2\2WU\3\2\2\2WX\3\2\2\2X\21\3\2\2\2Y[\5\16\b\2ZY\3\2\2\2[\\\3\2\2\2"+
+		"\\Z\3\2\2\2\\]\3\2\2\2]\23\3\2\2\2^`\5\26\f\2_^\3\2\2\2`a\3\2\2\2a_\3"+
+		"\2\2\2ab\3\2\2\2b\25\3\2\2\2cd\5*\26\2de\5\30\r\2ef\7\b\2\2f\27\3\2\2"+
+		"\2gh\5\32\16\2h\31\3\2\2\2ij\7\13\2\2jk\7\26\2\2kl\7\f\2\2lr\5\34\17\2"+
+		"mn\7\13\2\2no\7\25\2\2op\7\r\2\2pr\5\34\17\2qi\3\2\2\2qm\3\2\2\2r\33\3"+
+		"\2\2\2sy\5\36\20\2ty\5 \21\2uy\5\"\22\2vy\5$\23\2wy\5&\24\2xs\3\2\2\2"+
+		"xt\3\2\2\2xu\3\2\2\2xv\3\2\2\2xw\3\2\2\2y\35\3\2\2\2z{\7\16\2\2{\37\3"+
+		"\2\2\2|}\7\17\2\2}!\3\2\2\2~\177\7\20\2\2\177#\3\2\2\2\u0080\u0081\7\21"+
+		"\2\2\u0081%\3\2\2\2\u0082\u0083\7\22\2\2\u0083\'\3\2\2\2\u0084\u0085\5"+
+		"\22\n\2\u0085)\3\2\2\2\u0086\u0087\5,\27\2\u0087+\3\2\2\2\u0088\u0089"+
+		"\7\23\2\2\u0089-\3\2\2\2\n\61\67GW\\aqx";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

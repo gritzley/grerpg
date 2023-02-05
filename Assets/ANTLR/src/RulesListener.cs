@@ -81,25 +81,35 @@ public interface IRulesListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitUnit([NotNull] RulesParser.UnitContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="RulesParser.unitType"/>.
+	/// Enter a parse tree produced by <see cref="RulesParser.stats"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterUnitType([NotNull] RulesParser.UnitTypeContext context);
+	void EnterStats([NotNull] RulesParser.StatsContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="RulesParser.unitType"/>.
+	/// Exit a parse tree produced by <see cref="RulesParser.stats"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitUnitType([NotNull] RulesParser.UnitTypeContext context);
+	void ExitStats([NotNull] RulesParser.StatsContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="RulesParser.unitName"/>.
+	/// Enter a parse tree produced by <see cref="RulesParser.type"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterUnitName([NotNull] RulesParser.UnitNameContext context);
+	void EnterType([NotNull] RulesParser.TypeContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="RulesParser.unitName"/>.
+	/// Exit a parse tree produced by <see cref="RulesParser.type"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitUnitName([NotNull] RulesParser.UnitNameContext context);
+	void ExitType([NotNull] RulesParser.TypeContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RulesParser.name"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterName([NotNull] RulesParser.NameContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RulesParser.name"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitName([NotNull] RulesParser.NameContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RulesParser.unitDescription"/>.
 	/// </summary>

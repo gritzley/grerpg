@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74d892e973905e04ca13fdadd4e1d1f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerDeck: []
+  _startHandSize: 5
 --- !u!114 &2989171270486843198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57,9 +59,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c037a78fcaefdd42990966a84d61555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Dimensions: {x: 6, y: 6}
   SquarePrefab: {fileID: 9046541898216653518, guid: 1f471289cd7808a4fae7def35bec2da0, type: 3}
   UnitPrefab: {fileID: 1038010213737651218, guid: 2c0ce21411138b144a06c461d00c18cc, type: 3}
+  _dimensions: {x: 6, y: 6}
 --- !u!114 &1202945840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,9 +74,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8fd1aeab95ea1d4a86f9bc82ded9c52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeckPosition: {x: 0, y: -5.5, z: 0}
-  YardPosition: {x: 0, y: -10, z: 0}
   Deck: []
   Cards: []
   Yard: []
+  DeckPosition: {x: 0, y: -5.5, z: 0}
+  YardPosition: {x: 0, y: -10, z: 0}
   CardPrefab: {fileID: 7142433283970879349, guid: b04ec5a48344b404eaaacd6130fcc69c, type: 3}

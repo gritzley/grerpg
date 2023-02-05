@@ -10,15 +10,16 @@ imperative
 	;
 
 moveUnit: 'Move a' targetUnit 'up to' INT 'spaces.';
-spawnUnit: 'Summon' (INT|'a') unitName '.';
+spawnUnit: 'Summon' (INT|'a') name '.';
 
 // Units
-unit: unitType+ '-' INT 'hp' unitBehaviour;
+unit: type+ '-' stats NL unitBehaviour;
 
-unitType: ID;
-unitName: ID+;
+stats: INT '/' INT;
+type: ID;
+name: ID+;
 
-unitDescription: unitType+;
+unitDescription: type+;
 
 unitBehaviour: instruction+;
 

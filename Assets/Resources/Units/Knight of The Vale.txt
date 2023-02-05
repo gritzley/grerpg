@@ -1,1 +1,1 @@
-Knight - 100hp
+Knight - 20/100

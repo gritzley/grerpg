@@ -7,8 +7,9 @@ using UnityEngine;
 public class Battlefield : MonoBehaviour
 {
     public GameObject SquarePrefab, UnitPrefab;
-    public (int, int) SquareID(Square square) => Squares.Where(e => e.Value == square).First().Key;
-    public List<Square> GetSquares(Func<Square, bool> predicate) => Squares.Values.Where(predicate).ToList();
+    public (int, int) SquareID(Square square) => _squares.Where(e => e.Value == square).First().Key;
+    public List<Square> GetSquares(Func<Square, bool> predicate = null) => _squares.Values.Where(predicate ?? (s => true)).ToList();
+    public List<Unit> Units => GetSquares(square => square.Unit != null).Select(square => square.Unit).ToList();
     public int GetDistance(Square a, Square b)
     {
         (int aX, int aY) = SquareID(a);
@@ -18,12 +19,12 @@ public class Battlefield : MonoBehaviour
     public Square[] GetAdjacentSquares(Square s)
     {
         (int x, int y) = SquareID(s);
-        return new Square[] { Squares[(x, y + 1)], Squares[(x + 1, y)], Squares[(x, y - 1)], Squares[(x - 1, y)] };
+        return new Square[] { _squares[(x, y + 1)], _squares[(x + 1, y)], _squares[(x, y - 1)], _squares[(x - 1, y)] };
     }
     public async Task<Square> GetUserSelectedSquare(Func<Square, bool> restriction = null)
     {
         // Get all squares that fit the fiven restriction
-        List<Square> ViableSquares = GetSquares(restriction ?? (s => true));
+        List<Square> ViableSquares = GetSquares(restriction);
 
         // Edge Case returns
         if (ViableSquares.Count == 1) return ViableSquares.First();
@@ -53,11 +54,11 @@ public class Battlefield : MonoBehaviour
         return selectedSquare;
     }
 
-    [SerializeField] private Vector2Int Dimensions = Vector2Int.one;
-    private float FieldSize = 1.2f;
-    private Dictionary<(int, int), Square> Squares;
-    private Vector3 SquarePosition(int x, int y) => new Vector3(GetPosition1D(Dimensions.x, x), GetPosition1D(Dimensions.y, y), 0);
-    private float GetPosition1D(int n, int i) => (n - 1) * (FieldSize / -2) + FieldSize * i;
+    [SerializeField] private Vector2Int _dimensions = Vector2Int.one;
+    private float _fieldSize = 1.2f;
+    private Dictionary<(int, int), Square> _squares;
+    private Vector3 SquarePosition(int x, int y) => new Vector3(GetPosition1D(_dimensions.x, x), GetPosition1D(_dimensions.y, y), 0);
+    private float GetPosition1D(int n, int i) => (n - 1) * (_fieldSize / -2) + _fieldSize * i;
 
     private void Awake()
     {
@@ -67,13 +68,13 @@ public class Battlefield : MonoBehaviour
     // Initializes Squares, based on the dimensions.
     private void BuildSquares()
     {
-        Squares = new Dictionary<(int, int), Square>();
-        for (int x = 0; x < Dimensions.x; x++)
+        _squares = new Dictionary<(int, int), Square>();
+        for (int x = 0; x < _dimensions.x; x++)
         {
-            for (int y = 0; y < Dimensions.y; y++)
+            for (int y = 0; y < _dimensions.y; y++)
             {
                 Square s = Instantiate(SquarePrefab, SquarePosition(x, y), Quaternion.identity).GetComponent<Square>();
-                Squares.Add((x, y), s);
+                _squares.Add((x, y), s);
             }
         }
     }

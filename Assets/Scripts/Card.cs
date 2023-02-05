@@ -58,13 +58,13 @@ public class Card : MonoBehaviour
     private async Task SpawnUnit(RulesParser.SpawnUnitContext context)
     {
         Square target = await _battlefield.GetUserSelectedSquare(square => square.Unit == null);
-        string unitName = String.Join(" ", context.unitName().children);
+        string unitName = String.Join(" ", context.name().children);
         Instantiate(_battlefield.UnitPrefab).GetComponent<Unit>().Init(_battlefield, unitName).GoTo(target, false);
     }
     // Internal Methods
     private async Task<Unit> SelectUnit(RulesParser.UnitDescriptionContext context)
     {
-        List<string> types = context.unitType().Select(t => t.GetText()).ToList();
+        List<string> types = context.type().Select(t => t.GetText()).ToList();
         return (await _battlefield.GetUserSelectedSquare( square => square.Unit != null && types.All(square.Unit.Types.Contains) ))?.Unit;
     }
 }

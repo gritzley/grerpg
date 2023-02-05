@@ -41,21 +41,21 @@ public partial class RulesParser : Parser {
 		FlOAT=18, ONE=19, INT=20, ID=21, WS=22, NL=23;
 	public const int
 		RULE_spell = 0, RULE_imperative = 1, RULE_moveUnit = 2, RULE_spawnUnit = 3, 
-		RULE_unit = 4, RULE_unitType = 5, RULE_unitName = 6, RULE_unitDescription = 7, 
-		RULE_unitBehaviour = 8, RULE_instruction = 9, RULE_action = 10, RULE_move = 11, 
-		RULE_direction = 12, RULE_directionUp = 13, RULE_directionDown = 14, RULE_directionLeft = 15, 
-		RULE_directionRight = 16, RULE_directionRandom = 17, RULE_targetUnit = 18, 
-		RULE_trigger = 19, RULE_startCombat = 20;
+		RULE_unit = 4, RULE_stats = 5, RULE_type = 6, RULE_name = 7, RULE_unitDescription = 8, 
+		RULE_unitBehaviour = 9, RULE_instruction = 10, RULE_action = 11, RULE_move = 12, 
+		RULE_direction = 13, RULE_directionUp = 14, RULE_directionDown = 15, RULE_directionLeft = 16, 
+		RULE_directionRight = 17, RULE_directionRandom = 18, RULE_targetUnit = 19, 
+		RULE_trigger = 20, RULE_startCombat = 21;
 	public static readonly string[] ruleNames = {
-		"spell", "imperative", "moveUnit", "spawnUnit", "unit", "unitType", "unitName", 
-		"unitDescription", "unitBehaviour", "instruction", "action", "move", "direction", 
-		"directionUp", "directionDown", "directionLeft", "directionRight", "directionRandom", 
-		"targetUnit", "trigger", "startCombat"
+		"spell", "imperative", "moveUnit", "spawnUnit", "unit", "stats", "type", 
+		"name", "unitDescription", "unitBehaviour", "instruction", "action", "move", 
+		"direction", "directionUp", "directionDown", "directionLeft", "directionRight", 
+		"directionRandom", "targetUnit", "trigger", "startCombat"
 	};
 
 	private static readonly string[] _LiteralNames = {
 		null, "'Move a'", "'up to'", "'spaces.'", "'Summon'", "'a'", "'.'", "'-'", 
-		"'hp'", "'move'", "'steps'", "'step'", "'up'", "'down'", "'left'", "'right'", 
+		"'/'", "'move'", "'steps'", "'step'", "'up'", "'down'", "'left'", "'right'", 
 		"'in a random direction'", "'At the beginning of combat'", null, "'1 '"
 	};
 	private static readonly string[] _SymbolicNames = {
@@ -128,21 +128,21 @@ public partial class RulesParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 43;
+			State = 45;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
 				{
-				State = 42;
+				State = 44;
 				imperative();
 				}
 				}
-				State = 45;
+				State = 47;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			} while ( _la==T__0 || _la==T__3 );
-			State = 47;
+			State = 49;
 			Match(Eof);
 			}
 		}
@@ -186,20 +186,20 @@ public partial class RulesParser : Parser {
 		ImperativeContext _localctx = new ImperativeContext(Context, State);
 		EnterRule(_localctx, 2, RULE_imperative);
 		try {
-			State = 51;
+			State = 53;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case T__0:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 49;
+				State = 51;
 				moveUnit();
 				}
 				break;
 			case T__3:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 50;
+				State = 52;
 				spawnUnit();
 				}
 				break;
@@ -247,15 +247,15 @@ public partial class RulesParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 53;
-			Match(T__0);
-			State = 54;
-			targetUnit();
 			State = 55;
-			Match(T__1);
+			Match(T__0);
 			State = 56;
-			Match(INT);
+			targetUnit();
 			State = 57;
+			Match(T__1);
+			State = 58;
+			Match(INT);
+			State = 59;
 			Match(T__2);
 			}
 		}
@@ -271,8 +271,8 @@ public partial class RulesParser : Parser {
 	}
 
 	public partial class SpawnUnitContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public UnitNameContext unitName() {
-			return GetRuleContext<UnitNameContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public NameContext name() {
+			return GetRuleContext<NameContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode INT() { return GetToken(RulesParser.INT, 0); }
 		public SpawnUnitContext(ParserRuleContext parent, int invokingState)
@@ -300,9 +300,9 @@ public partial class RulesParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 59;
+			State = 61;
 			Match(T__3);
-			State = 60;
+			State = 62;
 			_la = TokenStream.LA(1);
 			if ( !(_la==T__4 || _la==INT) ) {
 			ErrorHandler.RecoverInline(this);
@@ -311,9 +311,9 @@ public partial class RulesParser : Parser {
 				ErrorHandler.ReportMatch(this);
 			    Consume();
 			}
-			State = 61;
-			unitName();
-			State = 62;
+			State = 63;
+			name();
+			State = 64;
 			Match(T__5);
 			}
 		}
@@ -329,15 +329,18 @@ public partial class RulesParser : Parser {
 	}
 
 	public partial class UnitContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode INT() { return GetToken(RulesParser.INT, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public StatsContext stats() {
+			return GetRuleContext<StatsContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NL() { return GetToken(RulesParser.NL, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public UnitBehaviourContext unitBehaviour() {
 			return GetRuleContext<UnitBehaviourContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public UnitTypeContext[] unitType() {
-			return GetRuleContexts<UnitTypeContext>();
+		[System.Diagnostics.DebuggerNonUserCode] public TypeContext[] type() {
+			return GetRuleContexts<TypeContext>();
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public UnitTypeContext unitType(int i) {
-			return GetRuleContext<UnitTypeContext>(i);
+		[System.Diagnostics.DebuggerNonUserCode] public TypeContext type(int i) {
+			return GetRuleContext<TypeContext>(i);
 		}
 		public UnitContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -364,27 +367,27 @@ public partial class RulesParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 65;
+			State = 67;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
 				{
-				State = 64;
-				unitType();
+				State = 66;
+				type();
 				}
 				}
-				State = 67;
+				State = 69;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			} while ( _la==ID );
-			State = 69;
-			Match(T__6);
-			State = 70;
-			Match(INT);
 			State = 71;
-			Match(T__7);
+			Match(T__6);
 			State = 72;
+			stats();
+			State = 73;
+			Match(NL);
+			State = 74;
 			unitBehaviour();
 			}
 		}
@@ -399,33 +402,81 @@ public partial class RulesParser : Parser {
 		return _localctx;
 	}
 
-	public partial class UnitTypeContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ID() { return GetToken(RulesParser.ID, 0); }
-		public UnitTypeContext(ParserRuleContext parent, int invokingState)
+	public partial class StatsContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] INT() { return GetTokens(RulesParser.INT); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode INT(int i) {
+			return GetToken(RulesParser.INT, i);
+		}
+		public StatsContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_unitType; } }
+		public override int RuleIndex { get { return RULE_stats; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			IRulesListener typedListener = listener as IRulesListener;
-			if (typedListener != null) typedListener.EnterUnitType(this);
+			if (typedListener != null) typedListener.EnterStats(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			IRulesListener typedListener = listener as IRulesListener;
-			if (typedListener != null) typedListener.ExitUnitType(this);
+			if (typedListener != null) typedListener.ExitStats(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public UnitTypeContext unitType() {
-		UnitTypeContext _localctx = new UnitTypeContext(Context, State);
-		EnterRule(_localctx, 10, RULE_unitType);
+	public StatsContext stats() {
+		StatsContext _localctx = new StatsContext(Context, State);
+		EnterRule(_localctx, 10, RULE_stats);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 74;
+			State = 76;
+			Match(INT);
+			State = 77;
+			Match(T__7);
+			State = 78;
+			Match(INT);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class TypeContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ID() { return GetToken(RulesParser.ID, 0); }
+		public TypeContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_type; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IRulesListener typedListener = listener as IRulesListener;
+			if (typedListener != null) typedListener.EnterType(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IRulesListener typedListener = listener as IRulesListener;
+			if (typedListener != null) typedListener.ExitType(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public TypeContext type() {
+		TypeContext _localctx = new TypeContext(Context, State);
+		EnterRule(_localctx, 12, RULE_type);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 80;
 			Match(ID);
 			}
 		}
@@ -440,47 +491,47 @@ public partial class RulesParser : Parser {
 		return _localctx;
 	}
 
-	public partial class UnitNameContext : ParserRuleContext {
+	public partial class NameContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] ID() { return GetTokens(RulesParser.ID); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ID(int i) {
 			return GetToken(RulesParser.ID, i);
 		}
-		public UnitNameContext(ParserRuleContext parent, int invokingState)
+		public NameContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_unitName; } }
+		public override int RuleIndex { get { return RULE_name; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			IRulesListener typedListener = listener as IRulesListener;
-			if (typedListener != null) typedListener.EnterUnitName(this);
+			if (typedListener != null) typedListener.EnterName(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			IRulesListener typedListener = listener as IRulesListener;
-			if (typedListener != null) typedListener.ExitUnitName(this);
+			if (typedListener != null) typedListener.ExitName(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public UnitNameContext unitName() {
-		UnitNameContext _localctx = new UnitNameContext(Context, State);
-		EnterRule(_localctx, 12, RULE_unitName);
+	public NameContext name() {
+		NameContext _localctx = new NameContext(Context, State);
+		EnterRule(_localctx, 14, RULE_name);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 77;
+			State = 83;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
 				{
-				State = 76;
+				State = 82;
 				Match(ID);
 				}
 				}
-				State = 79;
+				State = 85;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			} while ( _la==ID );
@@ -498,11 +549,11 @@ public partial class RulesParser : Parser {
 	}
 
 	public partial class UnitDescriptionContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public UnitTypeContext[] unitType() {
-			return GetRuleContexts<UnitTypeContext>();
+		[System.Diagnostics.DebuggerNonUserCode] public TypeContext[] type() {
+			return GetRuleContexts<TypeContext>();
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public UnitTypeContext unitType(int i) {
-			return GetRuleContext<UnitTypeContext>(i);
+		[System.Diagnostics.DebuggerNonUserCode] public TypeContext type(int i) {
+			return GetRuleContext<TypeContext>(i);
 		}
 		public UnitDescriptionContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -524,22 +575,22 @@ public partial class RulesParser : Parser {
 	[RuleVersion(0)]
 	public UnitDescriptionContext unitDescription() {
 		UnitDescriptionContext _localctx = new UnitDescriptionContext(Context, State);
-		EnterRule(_localctx, 14, RULE_unitDescription);
+		EnterRule(_localctx, 16, RULE_unitDescription);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 82;
+			State = 88;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
 				{
-				State = 81;
-				unitType();
+				State = 87;
+				type();
 				}
 				}
-				State = 84;
+				State = 90;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			} while ( _la==ID );
@@ -583,22 +634,22 @@ public partial class RulesParser : Parser {
 	[RuleVersion(0)]
 	public UnitBehaviourContext unitBehaviour() {
 		UnitBehaviourContext _localctx = new UnitBehaviourContext(Context, State);
-		EnterRule(_localctx, 16, RULE_unitBehaviour);
+		EnterRule(_localctx, 18, RULE_unitBehaviour);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 87;
+			State = 93;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
 				{
-				State = 86;
+				State = 92;
 				instruction();
 				}
 				}
-				State = 89;
+				State = 95;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			} while ( _la==T__16 );
@@ -642,15 +693,15 @@ public partial class RulesParser : Parser {
 	[RuleVersion(0)]
 	public InstructionContext instruction() {
 		InstructionContext _localctx = new InstructionContext(Context, State);
-		EnterRule(_localctx, 18, RULE_instruction);
+		EnterRule(_localctx, 20, RULE_instruction);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 91;
+			State = 97;
 			trigger();
-			State = 92;
+			State = 98;
 			action();
-			State = 93;
+			State = 99;
 			Match(T__5);
 			}
 		}
@@ -689,11 +740,11 @@ public partial class RulesParser : Parser {
 	[RuleVersion(0)]
 	public ActionContext action() {
 		ActionContext _localctx = new ActionContext(Context, State);
-		EnterRule(_localctx, 20, RULE_action);
+		EnterRule(_localctx, 22, RULE_action);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 95;
+			State = 101;
 			move();
 			}
 		}
@@ -734,34 +785,34 @@ public partial class RulesParser : Parser {
 	[RuleVersion(0)]
 	public MoveContext move() {
 		MoveContext _localctx = new MoveContext(Context, State);
-		EnterRule(_localctx, 22, RULE_move);
+		EnterRule(_localctx, 24, RULE_move);
 		try {
-			State = 105;
+			State = 111;
 			ErrorHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(TokenStream,6,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 97;
+				State = 103;
 				Match(T__8);
-				State = 98;
+				State = 104;
 				Match(INT);
-				State = 99;
+				State = 105;
 				Match(T__9);
-				State = 100;
+				State = 106;
 				direction();
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 101;
+				State = 107;
 				Match(T__8);
-				State = 102;
+				State = 108;
 				Match(ONE);
-				State = 103;
+				State = 109;
 				Match(T__10);
-				State = 104;
+				State = 110;
 				direction();
 				}
 				break;
@@ -814,43 +865,43 @@ public partial class RulesParser : Parser {
 	[RuleVersion(0)]
 	public DirectionContext direction() {
 		DirectionContext _localctx = new DirectionContext(Context, State);
-		EnterRule(_localctx, 24, RULE_direction);
+		EnterRule(_localctx, 26, RULE_direction);
 		try {
-			State = 112;
+			State = 118;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case T__11:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 107;
+				State = 113;
 				directionUp();
 				}
 				break;
 			case T__12:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 108;
+				State = 114;
 				directionDown();
 				}
 				break;
 			case T__13:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 109;
+				State = 115;
 				directionLeft();
 				}
 				break;
 			case T__14:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 110;
+				State = 116;
 				directionRight();
 				}
 				break;
 			case T__15:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 111;
+				State = 117;
 				directionRandom();
 				}
 				break;
@@ -890,11 +941,11 @@ public partial class RulesParser : Parser {
 	[RuleVersion(0)]
 	public DirectionUpContext directionUp() {
 		DirectionUpContext _localctx = new DirectionUpContext(Context, State);
-		EnterRule(_localctx, 26, RULE_directionUp);
+		EnterRule(_localctx, 28, RULE_directionUp);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 114;
+			State = 120;
 			Match(T__11);
 			}
 		}
@@ -930,11 +981,11 @@ public partial class RulesParser : Parser {
 	[RuleVersion(0)]
 	public DirectionDownContext directionDown() {
 		DirectionDownContext _localctx = new DirectionDownContext(Context, State);
-		EnterRule(_localctx, 28, RULE_directionDown);
+		EnterRule(_localctx, 30, RULE_directionDown);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 116;
+			State = 122;
 			Match(T__12);
 			}
 		}
@@ -970,11 +1021,11 @@ public partial class RulesParser : Parser {
 	[RuleVersion(0)]
 	public DirectionLeftContext directionLeft() {
 		DirectionLeftContext _localctx = new DirectionLeftContext(Context, State);
-		EnterRule(_localctx, 30, RULE_directionLeft);
+		EnterRule(_localctx, 32, RULE_directionLeft);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 118;
+			State = 124;
 			Match(T__13);
 			}
 		}
@@ -1010,11 +1061,11 @@ public partial class RulesParser : Parser {
 	[RuleVersion(0)]
 	public DirectionRightContext directionRight() {
 		DirectionRightContext _localctx = new DirectionRightContext(Context, State);
-		EnterRule(_localctx, 32, RULE_directionRight);
+		EnterRule(_localctx, 34, RULE_directionRight);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 120;
+			State = 126;
 			Match(T__14);
 			}
 		}
@@ -1050,11 +1101,11 @@ public partial class RulesParser : Parser {
 	[RuleVersion(0)]
 	public DirectionRandomContext directionRandom() {
 		DirectionRandomContext _localctx = new DirectionRandomContext(Context, State);
-		EnterRule(_localctx, 34, RULE_directionRandom);
+		EnterRule(_localctx, 36, RULE_directionRandom);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 122;
+			State = 128;
 			Match(T__15);
 			}
 		}
@@ -1093,11 +1144,11 @@ public partial class RulesParser : Parser {
 	[RuleVersion(0)]
 	public TargetUnitContext targetUnit() {
 		TargetUnitContext _localctx = new TargetUnitContext(Context, State);
-		EnterRule(_localctx, 36, RULE_targetUnit);
+		EnterRule(_localctx, 38, RULE_targetUnit);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 124;
+			State = 130;
 			unitDescription();
 			}
 		}
@@ -1136,11 +1187,11 @@ public partial class RulesParser : Parser {
 	[RuleVersion(0)]
 	public TriggerContext trigger() {
 		TriggerContext _localctx = new TriggerContext(Context, State);
-		EnterRule(_localctx, 38, RULE_trigger);
+		EnterRule(_localctx, 40, RULE_trigger);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 126;
+			State = 132;
 			startCombat();
 			}
 		}
@@ -1176,11 +1227,11 @@ public partial class RulesParser : Parser {
 	[RuleVersion(0)]
 	public StartCombatContext startCombat() {
 		StartCombatContext _localctx = new StartCombatContext(Context, State);
-		EnterRule(_localctx, 40, RULE_startCombat);
+		EnterRule(_localctx, 42, RULE_startCombat);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 128;
+			State = 134;
 			Match(T__16);
 			}
 		}
@@ -1196,42 +1247,44 @@ public partial class RulesParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,23,131,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		4,1,23,137,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
 		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,14,
-		2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,20,7,20,1,0,4,0,44,
-		8,0,11,0,12,0,45,1,0,1,0,1,1,1,1,3,1,52,8,1,1,2,1,2,1,2,1,2,1,2,1,2,1,
-		3,1,3,1,3,1,3,1,3,1,4,4,4,66,8,4,11,4,12,4,67,1,4,1,4,1,4,1,4,1,4,1,5,
-		1,5,1,6,4,6,78,8,6,11,6,12,6,79,1,7,4,7,83,8,7,11,7,12,7,84,1,8,4,8,88,
-		8,8,11,8,12,8,89,1,9,1,9,1,9,1,9,1,10,1,10,1,11,1,11,1,11,1,11,1,11,1,
-		11,1,11,1,11,3,11,106,8,11,1,12,1,12,1,12,1,12,1,12,3,12,113,8,12,1,13,
-		1,13,1,14,1,14,1,15,1,15,1,16,1,16,1,17,1,17,1,18,1,18,1,19,1,19,1,20,
-		1,20,1,20,0,0,21,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,
-		40,0,1,2,0,5,5,20,20,120,0,43,1,0,0,0,2,51,1,0,0,0,4,53,1,0,0,0,6,59,1,
-		0,0,0,8,65,1,0,0,0,10,74,1,0,0,0,12,77,1,0,0,0,14,82,1,0,0,0,16,87,1,0,
-		0,0,18,91,1,0,0,0,20,95,1,0,0,0,22,105,1,0,0,0,24,112,1,0,0,0,26,114,1,
-		0,0,0,28,116,1,0,0,0,30,118,1,0,0,0,32,120,1,0,0,0,34,122,1,0,0,0,36,124,
-		1,0,0,0,38,126,1,0,0,0,40,128,1,0,0,0,42,44,3,2,1,0,43,42,1,0,0,0,44,45,
-		1,0,0,0,45,43,1,0,0,0,45,46,1,0,0,0,46,47,1,0,0,0,47,48,5,0,0,1,48,1,1,
-		0,0,0,49,52,3,4,2,0,50,52,3,6,3,0,51,49,1,0,0,0,51,50,1,0,0,0,52,3,1,0,
-		0,0,53,54,5,1,0,0,54,55,3,36,18,0,55,56,5,2,0,0,56,57,5,20,0,0,57,58,5,
-		3,0,0,58,5,1,0,0,0,59,60,5,4,0,0,60,61,7,0,0,0,61,62,3,12,6,0,62,63,5,
-		6,0,0,63,7,1,0,0,0,64,66,3,10,5,0,65,64,1,0,0,0,66,67,1,0,0,0,67,65,1,
-		0,0,0,67,68,1,0,0,0,68,69,1,0,0,0,69,70,5,7,0,0,70,71,5,20,0,0,71,72,5,
-		8,0,0,72,73,3,16,8,0,73,9,1,0,0,0,74,75,5,21,0,0,75,11,1,0,0,0,76,78,5,
-		21,0,0,77,76,1,0,0,0,78,79,1,0,0,0,79,77,1,0,0,0,79,80,1,0,0,0,80,13,1,
-		0,0,0,81,83,3,10,5,0,82,81,1,0,0,0,83,84,1,0,0,0,84,82,1,0,0,0,84,85,1,
-		0,0,0,85,15,1,0,0,0,86,88,3,18,9,0,87,86,1,0,0,0,88,89,1,0,0,0,89,87,1,
-		0,0,0,89,90,1,0,0,0,90,17,1,0,0,0,91,92,3,38,19,0,92,93,3,20,10,0,93,94,
-		5,6,0,0,94,19,1,0,0,0,95,96,3,22,11,0,96,21,1,0,0,0,97,98,5,9,0,0,98,99,
-		5,20,0,0,99,100,5,10,0,0,100,106,3,24,12,0,101,102,5,9,0,0,102,103,5,19,
-		0,0,103,104,5,11,0,0,104,106,3,24,12,0,105,97,1,0,0,0,105,101,1,0,0,0,
-		106,23,1,0,0,0,107,113,3,26,13,0,108,113,3,28,14,0,109,113,3,30,15,0,110,
-		113,3,32,16,0,111,113,3,34,17,0,112,107,1,0,0,0,112,108,1,0,0,0,112,109,
-		1,0,0,0,112,110,1,0,0,0,112,111,1,0,0,0,113,25,1,0,0,0,114,115,5,12,0,
-		0,115,27,1,0,0,0,116,117,5,13,0,0,117,29,1,0,0,0,118,119,5,14,0,0,119,
-		31,1,0,0,0,120,121,5,15,0,0,121,33,1,0,0,0,122,123,5,16,0,0,123,35,1,0,
-		0,0,124,125,3,14,7,0,125,37,1,0,0,0,126,127,3,40,20,0,127,39,1,0,0,0,128,
-		129,5,17,0,0,129,41,1,0,0,0,8,45,51,67,79,84,89,105,112
+		2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,20,7,20,2,21,7,21,
+		1,0,4,0,46,8,0,11,0,12,0,47,1,0,1,0,1,1,1,1,3,1,54,8,1,1,2,1,2,1,2,1,2,
+		1,2,1,2,1,3,1,3,1,3,1,3,1,3,1,4,4,4,68,8,4,11,4,12,4,69,1,4,1,4,1,4,1,
+		4,1,4,1,5,1,5,1,5,1,5,1,6,1,6,1,7,4,7,84,8,7,11,7,12,7,85,1,8,4,8,89,8,
+		8,11,8,12,8,90,1,9,4,9,94,8,9,11,9,12,9,95,1,10,1,10,1,10,1,10,1,11,1,
+		11,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,3,12,112,8,12,1,13,1,13,1,13,
+		1,13,1,13,3,13,119,8,13,1,14,1,14,1,15,1,15,1,16,1,16,1,17,1,17,1,18,1,
+		18,1,19,1,19,1,20,1,20,1,21,1,21,1,21,0,0,22,0,2,4,6,8,10,12,14,16,18,
+		20,22,24,26,28,30,32,34,36,38,40,42,0,1,2,0,5,5,20,20,125,0,45,1,0,0,0,
+		2,53,1,0,0,0,4,55,1,0,0,0,6,61,1,0,0,0,8,67,1,0,0,0,10,76,1,0,0,0,12,80,
+		1,0,0,0,14,83,1,0,0,0,16,88,1,0,0,0,18,93,1,0,0,0,20,97,1,0,0,0,22,101,
+		1,0,0,0,24,111,1,0,0,0,26,118,1,0,0,0,28,120,1,0,0,0,30,122,1,0,0,0,32,
+		124,1,0,0,0,34,126,1,0,0,0,36,128,1,0,0,0,38,130,1,0,0,0,40,132,1,0,0,
+		0,42,134,1,0,0,0,44,46,3,2,1,0,45,44,1,0,0,0,46,47,1,0,0,0,47,45,1,0,0,
+		0,47,48,1,0,0,0,48,49,1,0,0,0,49,50,5,0,0,1,50,1,1,0,0,0,51,54,3,4,2,0,
+		52,54,3,6,3,0,53,51,1,0,0,0,53,52,1,0,0,0,54,3,1,0,0,0,55,56,5,1,0,0,56,
+		57,3,38,19,0,57,58,5,2,0,0,58,59,5,20,0,0,59,60,5,3,0,0,60,5,1,0,0,0,61,
+		62,5,4,0,0,62,63,7,0,0,0,63,64,3,14,7,0,64,65,5,6,0,0,65,7,1,0,0,0,66,
+		68,3,12,6,0,67,66,1,0,0,0,68,69,1,0,0,0,69,67,1,0,0,0,69,70,1,0,0,0,70,
+		71,1,0,0,0,71,72,5,7,0,0,72,73,3,10,5,0,73,74,5,23,0,0,74,75,3,18,9,0,
+		75,9,1,0,0,0,76,77,5,20,0,0,77,78,5,8,0,0,78,79,5,20,0,0,79,11,1,0,0,0,
+		80,81,5,21,0,0,81,13,1,0,0,0,82,84,5,21,0,0,83,82,1,0,0,0,84,85,1,0,0,
+		0,85,83,1,0,0,0,85,86,1,0,0,0,86,15,1,0,0,0,87,89,3,12,6,0,88,87,1,0,0,
+		0,89,90,1,0,0,0,90,88,1,0,0,0,90,91,1,0,0,0,91,17,1,0,0,0,92,94,3,20,10,
+		0,93,92,1,0,0,0,94,95,1,0,0,0,95,93,1,0,0,0,95,96,1,0,0,0,96,19,1,0,0,
+		0,97,98,3,40,20,0,98,99,3,22,11,0,99,100,5,6,0,0,100,21,1,0,0,0,101,102,
+		3,24,12,0,102,23,1,0,0,0,103,104,5,9,0,0,104,105,5,20,0,0,105,106,5,10,
+		0,0,106,112,3,26,13,0,107,108,5,9,0,0,108,109,5,19,0,0,109,110,5,11,0,
+		0,110,112,3,26,13,0,111,103,1,0,0,0,111,107,1,0,0,0,112,25,1,0,0,0,113,
+		119,3,28,14,0,114,119,3,30,15,0,115,119,3,32,16,0,116,119,3,34,17,0,117,
+		119,3,36,18,0,118,113,1,0,0,0,118,114,1,0,0,0,118,115,1,0,0,0,118,116,
+		1,0,0,0,118,117,1,0,0,0,119,27,1,0,0,0,120,121,5,12,0,0,121,29,1,0,0,0,
+		122,123,5,13,0,0,123,31,1,0,0,0,124,125,5,14,0,0,125,33,1,0,0,0,126,127,
+		5,15,0,0,127,35,1,0,0,0,128,129,5,16,0,0,129,37,1,0,0,0,130,131,3,16,8,
+		0,131,39,1,0,0,0,132,133,3,42,21,0,133,41,1,0,0,0,134,135,5,17,0,0,135,
+		43,1,0,0,0,8,47,53,69,85,90,95,111,118
 	};
 
 	public static readonly ATN _ATN =
