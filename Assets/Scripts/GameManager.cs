@@ -1,33 +1,51 @@
 using UnityEngine;
+using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 [RequireComponent(typeof(Battlefield))]
 public class GameManager : MonoBehaviour
 {
-    private Player player;
-    private Battlefield battlefield;
-    void Start()
+    [SerializeField] private List<string> _playerDeck;
+    [SerializeField] private int _startHandSize;
+    private Player _player;
+    private Battlefield _battlefield;
+    private bool _running = false;
+    private void Start()
     {
-        player = GetComponent<Player>();
-        battlefield = GetComponent<Battlefield>();
+        _battlefield = GetComponent<Battlefield>();
+        _player = GetComponent<Player>().Init(_battlefield);
         Run();
     }
 
-    public async void Run()
+    private async void Run()
     {
-        player.BuildDeck(new List<string>() { "Charge", "Knight" });
-        await player.Draw(2);
+        _player.BuildDeck(_playerDeck);
+        await _player.Draw(_startHandSize);
+        _running = true;
 
+        while (_running)
+        {
+            await PlayerTurn();
+        }
+    }
+
+    private async Task PlayerTurn()
+    {
         while (true)
         {
-            Card card = await player.UserSelectCard();
-            if (card == null)
+            Card card = await _player.UserSelectCard();
+            try
             {
-                Debug.Log("No Playable Cards");
+                await card.Cast();
+                _player.Discard(card);
                 return;
             }
-            if (await card.Spell.Cast(battlefield)) player.Discard(card);
+            catch (NoValidSquareSelectionException _)
+            {
+                Debug.Log("Card could not be played, because there was no valid square to select.");
+            }
         }
     }
 }

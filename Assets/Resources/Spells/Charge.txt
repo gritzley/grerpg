@@ -1,0 +1,1 @@
+Move a Knight up to 3 spaces.
