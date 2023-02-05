@@ -1,16 +1,16 @@
 using System;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using System.Threading.Tasks;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
-using System.Linq;
-using System.Collections.Generic;
 
-[RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(MouseEventHandler))]
 public class Card : MonoBehaviour
 {
-    public event Action OnMouseEnterEvent, OnMouseExitEvent, OnMouseDownEvent;
+    public MouseEventHandler MouseEventHandler;
     public string Name { get => GetComponentInChildren<TMP_Text>().text; }
     public Card Init(Battlefield battlefield, string name)
     {
@@ -18,9 +18,9 @@ public class Card : MonoBehaviour
         if (spellDefiniton == null) throw new NoSpellDefinition(name);
 
         AntlrInputStream inputStream = new AntlrInputStream(spellDefiniton.text);
-        SpellsLexer lexer = new SpellsLexer(inputStream);
+        RulesLexer lexer = new RulesLexer(inputStream);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
-        SpellsParser parser = new SpellsParser(tokenStream);
+        RulesParser parser = new RulesParser(tokenStream);
         _spellTree = parser.spell();
 
         _name = name;
@@ -28,58 +28,45 @@ public class Card : MonoBehaviour
 
         _battlefield = battlefield;
 
+        MouseEventHandler = GetComponent<MouseEventHandler>();
+
         return this;
     }
     public async Task Cast()
     {
-        foreach (SpellsParser.ImperativeContext imperative in _spellTree.imperative())
+        foreach (RulesParser.ImperativeContext imperative in _spellTree.imperative())
         {
             IParseTree child = imperative.GetChild(0);
 
-            if (child is SpellsParser.MoveUnitContext) await MoveUnit((SpellsParser.MoveUnitContext)child);
-            if (child is SpellsParser.SpawnUnitContext) await SpawnUnit((SpellsParser.SpawnUnitContext)child);
+            if (child is RulesParser.MoveUnitContext) await MoveUnit((RulesParser.MoveUnitContext)child);
+            if (child is RulesParser.SpawnUnitContext) await SpawnUnit((RulesParser.SpawnUnitContext)child);
         }
     }
 
-    private SpellsParser.SpellContext _spellTree;
+    private RulesParser.SpellContext _spellTree;
     private string _name;
     private Battlefield _battlefield;
     private static int intValue(ITerminalNode n) => Int32.Parse(n.GetText());
-    private async Task MoveUnit(SpellsParser.MoveUnitContext context)
+    private async Task MoveUnit(RulesParser.MoveUnitContext context)
     {
-        Unit unit = await SelectUnit(context.unitDescription());
-
+        Unit unit = await SelectUnit(context.targetUnit().unitDescription());
         int distance = intValue(context.INT());
-        Square target = await _battlefield.UserSelectSquare(s => _battlefield.Distance(s, unit.Square) <= distance);
-
+        Square target = await _battlefield.GetUserSelectedSquare(square => _battlefield.GetDistance(square, unit.Square) <= distance && square.Unit == null);
         unit.GoTo(target);
     }
     // Spawn a Unit
-    private async Task SpawnUnit(SpellsParser.SpawnUnitContext context)
+    private async Task SpawnUnit(RulesParser.SpawnUnitContext context)
     {
-        Square target = await _battlefield.UserSelectSquare();
-
+        Square target = await _battlefield.GetUserSelectedSquare(square => square.Unit == null);
         string unitName = String.Join(" ", context.unitName().children);
-
-        Instantiate(_battlefield.UnitPrefab).GetComponent<Unit>().Init(_battlefield, unitName).GoTo(target);
+        Instantiate(_battlefield.UnitPrefab).GetComponent<Unit>().Init(_battlefield, unitName).GoTo(target, false);
     }
     // Internal Methods
-    private async Task<Unit> SelectUnit(SpellsParser.UnitDescriptionContext context)
+    private async Task<Unit> SelectUnit(RulesParser.UnitDescriptionContext context)
     {
         List<string> types = context.unitType().Select(t => t.GetText()).ToList();
-
-        Unit unit = (await _battlefield.UserSelectSquare(s =>
-        {
-            if (s.Unit == null) return false;
-            foreach (string type in types) if (!s.Unit.Types.Contains(type)) return false;
-            return true;
-        }))?.Unit;
-
-        return unit;
+        return (await _battlefield.GetUserSelectedSquare( square => square.Unit != null && types.All(square.Unit.Types.Contains) ))?.Unit;
     }
-    private void OnMouseDown() => OnMouseDownEvent?.Invoke();
-    private void OnMouseEnter() => OnMouseEnterEvent?.Invoke();
-    private void OnMouseExit() => OnMouseExitEvent?.Invoke();
 }
 
 public class NoSpellDefinition : Exception

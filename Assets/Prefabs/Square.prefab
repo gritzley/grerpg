@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8588166973882335813}
   - component: {fileID: -7298711405217959156}
   - component: {fileID: 6046879345022648889}
+  - component: {fileID: 8582399557739574867}
   m_Layer: 0
   m_Name: Square
   m_TagString: Untagged
@@ -97,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01712543f3d09d7429cb61a770c35454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Unit: {fileID: 0}
+  MouseEventHandler: {fileID: 0}
   highlightColor: {r: 0.764151, g: 0.4000979, b: 0.4000979, a: 1}
   softHighlightColor: {r: 0.9245283, g: 0.65017277, b: 0.36341512, a: 1}
 --- !u!61 &6046879345022648889
@@ -126,3 +127,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &8582399557739574867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9046541898216653518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82784546cb50b824fab6baf2572bde3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

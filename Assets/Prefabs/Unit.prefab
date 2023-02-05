@@ -96,6 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b85ffb17dafcf64e85af9053d93153d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tags: []
+  Types: []
   Square: {fileID: 0}
   Health: 100
+  Name: 

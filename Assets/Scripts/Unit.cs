@@ -1,8 +1,8 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using Antlr4.Runtime;
-using System.Linq;
 using Antlr4.Runtime.Tree;
 
 public class Unit : MonoBehaviour
@@ -10,27 +10,33 @@ public class Unit : MonoBehaviour
     [HideInInspector] public List<string> Types;
     [HideInInspector] public Square Square;
     [HideInInspector] public int Health = 100;
+    [HideInInspector] public string Name, Description;
     public Unit Init(Battlefield battlefield, string name)
     {
         TextAsset unitDefinition = Resources.Load<TextAsset>("units/" + name);
         if (unitDefinition == null) throw new NoUnitDefinition(name);
 
         AntlrInputStream inputStream = new AntlrInputStream(unitDefinition.text);
-        UnitsLexer lexer = new UnitsLexer(inputStream);
+        RulesLexer lexer = new RulesLexer(inputStream);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
-        UnitsParser parser = new UnitsParser(tokenStream);
+        RulesParser parser = new RulesParser(tokenStream);
 
         _unitTree = parser.unit();
 
         Types = _unitTree.unitType().Select(t => t.GetText()).ToList();
         Health = intValue(_unitTree.INT());
+        Name = name;
+        Description = unitDefinition.text;
 
         return this;
     }
-    public void GoTo(Square square)
+    public void GoTo(Square square, bool animated = true)
     {
         if (Square != null) Square.Unit = null;
-        transform.position = square.transform.position;
+
+        if (animated) transform.LeanMove(square.transform.position, 0.1f);
+        else transform.position = square.transform.position;
+
         square.Unit = this;
         Square = square;
     }
@@ -39,10 +45,9 @@ public class Unit : MonoBehaviour
         Health -= amount;
     }
 
-    private UnitsParser.UnitContext _unitTree;
+    private RulesParser.UnitContext _unitTree;
     private Battlefield _battlefield;
     private int intValue(ITerminalNode n) => Int32.Parse(n.GetText());
-
 }
 
 public class NoUnitDefinition : Exception

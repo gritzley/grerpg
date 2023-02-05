@@ -35,9 +35,9 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
-            Card card = await _player.UserSelectCard();
             try
             {
+                Card card = await _player.GetUserSelectedCard();
                 await card.Cast();
                 _player.Discard(card);
                 return;
@@ -45,6 +45,12 @@ public class GameManager : MonoBehaviour
             catch (NoValidSquareSelectionException _)
             {
                 Debug.Log("Card could not be played, because there was no valid square to select.");
+            }
+            catch (NoPlayableCardsException _)
+            {
+                Debug.Log("No more playable cards. Ending play.");
+                _running = false;
+                return;
             }
         }
     }

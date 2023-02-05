@@ -46,46 +46,40 @@ public class Player : MonoBehaviour
     /**
      * Wait for the user to pick a card, then return it.
      */
-    public async Task<Card> UserSelectCard(Func<Card, bool> restriction = null)
+    public async Task<Card> GetUserSelectedCard(Func<Card, bool> restriction = null)
     {
-        // Get all cards that fit the description
+        // Get all cards that fit the restriction
         List<Card> ViableCards = Cards.Where(restriction ?? (c => true)).ToList();
 
         // Edge Case returns
-        if (ViableCards.Count == 0) return null;
+        if (ViableCards.Count == 0) throw new NoPlayableCardsException();
 
         // Create the TCS for card selection, which cards can use to finish the task
         TaskCompletionSource<Card> tcs = new TaskCompletionSource<Card>();
+        Queue<Action> mouseEnterActions = new Queue<Action>();
+        Queue<Action> mouseExitActions = new Queue<Action>();
+        Queue<Action> mouseDownActions = new Queue<Action>();
+        foreach (Card card in ViableCards)
+        {
+            mouseEnterActions.Enqueue(() => StartCoroutine(HighlightCard(card, true)));
+            mouseExitActions.Enqueue(() => StartCoroutine(HighlightCard(card, false)));
+            mouseDownActions.Enqueue(() => tcs.TrySetResult(card));
 
-        // add listeners to card
-        Queue<Action> mouseEnterActions = new Queue<Action>(Cards.Select(c =>
-        {
-            Action onMouseEnterEvent = () => StartCoroutine(HighlightCard(c, true));
-            c.OnMouseEnterEvent += onMouseEnterEvent;
-            return onMouseEnterEvent;
-        }));
-        Queue<Action> mouseExitActions = new Queue<Action>(Cards.Select(c =>
-        {
-            Action onMouseExitEvent = () => StartCoroutine(HighlightCard(c, false));
-            c.OnMouseExitEvent += onMouseExitEvent;
-            return onMouseExitEvent;
-        }));
-        Queue<Action> mouseDownActions = new Queue<Action>(Cards.Select(c =>
-        {
-            Action onMouseDownEvent = () => tcs.TrySetResult(c);
-            c.OnMouseDownEvent += onMouseDownEvent;
-            return onMouseDownEvent;
-        }));
+            card.MouseEventHandler.OnMouseEnterEvent += mouseEnterActions.Last();
+            card.MouseEventHandler.OnMouseExitEvent += mouseExitActions.Last();
+            card.MouseEventHandler.OnMouseDownEvent += mouseDownActions.Last();
+        }
 
         // Wait for user selection
         Card selectedCard = await tcs.Task;
 
         // Clean up cards
-        Cards.ForEach(c => {
-            c.OnMouseEnterEvent -= mouseEnterActions.Dequeue();
-            c.OnMouseExitEvent -= mouseExitActions.Dequeue();
-            c.OnMouseDownEvent -= mouseDownActions.Dequeue();
-        });
+        foreach (Card card in ViableCards)
+        {
+            card.MouseEventHandler.OnMouseEnterEvent -= mouseEnterActions.Dequeue();
+            card.MouseEventHandler.OnMouseExitEvent -= mouseExitActions.Dequeue();
+            card.MouseEventHandler.OnMouseDownEvent -= mouseDownActions.Dequeue();
+        }
 
         return selectedCard;
     }
@@ -128,3 +122,4 @@ public class Player : MonoBehaviour
 }
 
 public class NoMoreCardsException : Exception { }
+public class NoPlayableCardsException : Exception { }
