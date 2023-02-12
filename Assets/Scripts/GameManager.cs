@@ -15,19 +15,19 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         _battlefield = GetComponent<Battlefield>();
-        _player = GetComponent<Player>().Init(_battlefield);
+        _player = GetComponent<Player>().Init(_battlefield, _playerDeck);
         Run();
     }
 
     private async void Run()
     {
-        _player.BuildDeck(_playerDeck);
         await _player.Draw(_startHandSize);
         _running = true;
 
         while (_running)
         {
             await PlayerTurn();
+            await CombatPhase();
         }
     }
 
@@ -40,7 +40,6 @@ public class GameManager : MonoBehaviour
                 Card card = await _player.GetUserSelectedCard();
                 await card.Cast();
                 _player.Discard(card);
-                return;
             }
             catch (NoValidSquareSelectionException)
             {
@@ -52,6 +51,19 @@ public class GameManager : MonoBehaviour
                 _running = false;
                 return;
             }
+            catch (TurnEndedException)
+            {
+                Debug.Log("Player ended his turn");
+                return;
+            }
+        }
+    }
+    private async Task CombatPhase()
+    {
+        foreach (Unit unit in new List<Unit>(_battlefield.Units))
+        {
+            if (unit == null) continue; // if unit is destroyed before it's turn
+            await unit.TriggerBehaviour(RulesLexer.START_COMBAT);
         }
     }
 }

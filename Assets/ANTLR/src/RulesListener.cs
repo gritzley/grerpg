@@ -71,6 +71,16 @@ public interface IRulesListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitSpawnUnit([NotNull] RulesParser.SpawnUnitContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="RulesParser.summonCardInHand"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterSummonCardInHand([NotNull] RulesParser.SummonCardInHandContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RulesParser.summonCardInHand"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitSummonCardInHand([NotNull] RulesParser.SummonCardInHandContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RulesParser.unit"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -101,35 +111,15 @@ public interface IRulesListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitType([NotNull] RulesParser.TypeContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="RulesParser.name"/>.
+	/// Enter a parse tree produced by <see cref="RulesParser.behaviour"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterName([NotNull] RulesParser.NameContext context);
+	void EnterBehaviour([NotNull] RulesParser.BehaviourContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="RulesParser.name"/>.
+	/// Exit a parse tree produced by <see cref="RulesParser.behaviour"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitName([NotNull] RulesParser.NameContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="RulesParser.unitDescription"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterUnitDescription([NotNull] RulesParser.UnitDescriptionContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="RulesParser.unitDescription"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitUnitDescription([NotNull] RulesParser.UnitDescriptionContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="RulesParser.unitBehaviour"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterUnitBehaviour([NotNull] RulesParser.UnitBehaviourContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="RulesParser.unitBehaviour"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitUnitBehaviour([NotNull] RulesParser.UnitBehaviourContext context);
+	void ExitBehaviour([NotNull] RulesParser.BehaviourContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RulesParser.instruction"/>.
 	/// </summary>
@@ -161,6 +151,46 @@ public interface IRulesListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitMove([NotNull] RulesParser.MoveContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="RulesParser.turn"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterTurn([NotNull] RulesParser.TurnContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RulesParser.turn"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitTurn([NotNull] RulesParser.TurnContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RulesParser.damage"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterDamage([NotNull] RulesParser.DamageContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RulesParser.damage"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitDamage([NotNull] RulesParser.DamageContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RulesParser.stepAmount"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterStepAmount([NotNull] RulesParser.StepAmountContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RulesParser.stepAmount"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitStepAmount([NotNull] RulesParser.StepAmountContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RulesParser.directionOR"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterDirectionOR([NotNull] RulesParser.DirectionORContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RulesParser.directionOR"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitDirectionOR([NotNull] RulesParser.DirectionORContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RulesParser.direction"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -170,56 +200,6 @@ public interface IRulesListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitDirection([NotNull] RulesParser.DirectionContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="RulesParser.directionUp"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterDirectionUp([NotNull] RulesParser.DirectionUpContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="RulesParser.directionUp"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitDirectionUp([NotNull] RulesParser.DirectionUpContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="RulesParser.directionDown"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterDirectionDown([NotNull] RulesParser.DirectionDownContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="RulesParser.directionDown"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitDirectionDown([NotNull] RulesParser.DirectionDownContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="RulesParser.directionLeft"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterDirectionLeft([NotNull] RulesParser.DirectionLeftContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="RulesParser.directionLeft"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitDirectionLeft([NotNull] RulesParser.DirectionLeftContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="RulesParser.directionRight"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterDirectionRight([NotNull] RulesParser.DirectionRightContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="RulesParser.directionRight"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitDirectionRight([NotNull] RulesParser.DirectionRightContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="RulesParser.directionRandom"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterDirectionRandom([NotNull] RulesParser.DirectionRandomContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="RulesParser.directionRandom"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitDirectionRandom([NotNull] RulesParser.DirectionRandomContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RulesParser.targetUnit"/>.
 	/// </summary>
@@ -231,6 +211,16 @@ public interface IRulesListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitTargetUnit([NotNull] RulesParser.TargetUnitContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="RulesParser.unitDescription"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterUnitDescription([NotNull] RulesParser.UnitDescriptionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RulesParser.unitDescription"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitUnitDescription([NotNull] RulesParser.UnitDescriptionContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RulesParser.trigger"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -240,14 +230,4 @@ public interface IRulesListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitTrigger([NotNull] RulesParser.TriggerContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="RulesParser.startCombat"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterStartCombat([NotNull] RulesParser.StartCombatContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="RulesParser.startCombat"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitStartCombat([NotNull] RulesParser.StartCombatContext context);
 }

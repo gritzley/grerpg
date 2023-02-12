@@ -84,6 +84,18 @@ public partial class RulesBaseListener : IRulesListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitSpawnUnit([NotNull] RulesParser.SpawnUnitContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="RulesParser.summonCardInHand"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterSummonCardInHand([NotNull] RulesParser.SummonCardInHandContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RulesParser.summonCardInHand"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitSummonCardInHand([NotNull] RulesParser.SummonCardInHandContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RulesParser.unit"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -120,41 +132,17 @@ public partial class RulesBaseListener : IRulesListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitType([NotNull] RulesParser.TypeContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="RulesParser.name"/>.
+	/// Enter a parse tree produced by <see cref="RulesParser.behaviour"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterName([NotNull] RulesParser.NameContext context) { }
+	public virtual void EnterBehaviour([NotNull] RulesParser.BehaviourContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="RulesParser.name"/>.
+	/// Exit a parse tree produced by <see cref="RulesParser.behaviour"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitName([NotNull] RulesParser.NameContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="RulesParser.unitDescription"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterUnitDescription([NotNull] RulesParser.UnitDescriptionContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="RulesParser.unitDescription"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitUnitDescription([NotNull] RulesParser.UnitDescriptionContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="RulesParser.unitBehaviour"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterUnitBehaviour([NotNull] RulesParser.UnitBehaviourContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="RulesParser.unitBehaviour"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitUnitBehaviour([NotNull] RulesParser.UnitBehaviourContext context) { }
+	public virtual void ExitBehaviour([NotNull] RulesParser.BehaviourContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RulesParser.instruction"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -192,6 +180,54 @@ public partial class RulesBaseListener : IRulesListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitMove([NotNull] RulesParser.MoveContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="RulesParser.turn"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterTurn([NotNull] RulesParser.TurnContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RulesParser.turn"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitTurn([NotNull] RulesParser.TurnContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RulesParser.damage"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterDamage([NotNull] RulesParser.DamageContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RulesParser.damage"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitDamage([NotNull] RulesParser.DamageContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RulesParser.stepAmount"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterStepAmount([NotNull] RulesParser.StepAmountContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RulesParser.stepAmount"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitStepAmount([NotNull] RulesParser.StepAmountContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RulesParser.directionOR"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterDirectionOR([NotNull] RulesParser.DirectionORContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RulesParser.directionOR"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitDirectionOR([NotNull] RulesParser.DirectionORContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RulesParser.direction"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -203,66 +239,6 @@ public partial class RulesBaseListener : IRulesListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitDirection([NotNull] RulesParser.DirectionContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="RulesParser.directionUp"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterDirectionUp([NotNull] RulesParser.DirectionUpContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="RulesParser.directionUp"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitDirectionUp([NotNull] RulesParser.DirectionUpContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="RulesParser.directionDown"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterDirectionDown([NotNull] RulesParser.DirectionDownContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="RulesParser.directionDown"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitDirectionDown([NotNull] RulesParser.DirectionDownContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="RulesParser.directionLeft"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterDirectionLeft([NotNull] RulesParser.DirectionLeftContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="RulesParser.directionLeft"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitDirectionLeft([NotNull] RulesParser.DirectionLeftContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="RulesParser.directionRight"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterDirectionRight([NotNull] RulesParser.DirectionRightContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="RulesParser.directionRight"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitDirectionRight([NotNull] RulesParser.DirectionRightContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="RulesParser.directionRandom"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterDirectionRandom([NotNull] RulesParser.DirectionRandomContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="RulesParser.directionRandom"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitDirectionRandom([NotNull] RulesParser.DirectionRandomContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RulesParser.targetUnit"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -276,6 +252,18 @@ public partial class RulesBaseListener : IRulesListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitTargetUnit([NotNull] RulesParser.TargetUnitContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="RulesParser.unitDescription"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterUnitDescription([NotNull] RulesParser.UnitDescriptionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RulesParser.unitDescription"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitUnitDescription([NotNull] RulesParser.UnitDescriptionContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RulesParser.trigger"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -287,18 +275,6 @@ public partial class RulesBaseListener : IRulesListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitTrigger([NotNull] RulesParser.TriggerContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="RulesParser.startCombat"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterStartCombat([NotNull] RulesParser.StartCombatContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="RulesParser.startCombat"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitStartCombat([NotNull] RulesParser.StartCombatContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

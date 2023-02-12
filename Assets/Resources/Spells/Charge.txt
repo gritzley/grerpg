@@ -1,1 +1,1 @@
-Move a Knight up to 3 spaces.
+Move target Knight up to 3 spaces.

@@ -1,1 +1,3 @@
-Knight - 20/100
+Human Knight - 20/100
+
+At the beginning of combat move up to 2 steps forwards.

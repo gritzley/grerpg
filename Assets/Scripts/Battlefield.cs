@@ -9,17 +9,22 @@ public class Battlefield : MonoBehaviour
     public GameObject SquarePrefab, UnitPrefab;
     public (int, int) SquareID(Square square) => _squares.Where(e => e.Value == square).First().Key;
     public List<Square> GetSquares(Func<Square, bool> predicate = null) => _squares.Values.Where(predicate ?? (s => true)).ToList();
-    public List<Unit> Units => GetSquares(square => square.Unit != null).Select(square => square.Unit).ToList();
+    public List<Unit> Units;
     public int GetDistance(Square a, Square b)
     {
         (int aX, int aY) = SquareID(a);
         (int bX, int bY) = SquareID(b);
         return Math.Abs(aX - bX) + Math.Abs(aY - bY);
     }
-    public Square[] GetAdjacentSquares(Square s)
+    public List<Square> GetSquaresInDirection(Square startSquare, Vector3 direction, int maxDistance = 1000)
     {
-        (int x, int y) = SquareID(s);
-        return new Square[] { _squares[(x, y + 1)], _squares[(x + 1, y)], _squares[(x, y - 1)], _squares[(x - 1, y)] };
+        (int x, int y) = SquareID(startSquare);
+
+        List<Square> result = new List<Square>();
+        Square nextSquare;
+        int i = 1;
+        while (_squares.TryGetValue((x + (int)direction.x * i, y + (int)direction.y * i), out nextSquare) && i++ <= maxDistance) { result.Add(nextSquare); }
+        return result;
     }
     public async Task<Square> GetUserSelectedSquare(Func<Square, bool> restriction = null)
     {
@@ -79,5 +84,4 @@ public class Battlefield : MonoBehaviour
         }
     }
 }
-
 public class NoValidSquareSelectionException : Exception { }
