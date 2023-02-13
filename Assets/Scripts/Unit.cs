@@ -6,6 +6,7 @@ using UnityEngine;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 
+[RequireComponent(typeof(SpriteRenderer))]
 public class Unit : MonoBehaviour
 {
     [HideInInspector] public List<string> Types;
@@ -16,6 +17,9 @@ public class Unit : MonoBehaviour
     {
         TextAsset unitDefinition = Resources.Load<TextAsset>("units/" + name);
         if (unitDefinition == null) throw new NoUnitDefinition(name);
+
+        Sprite sprite = Resources.Load<Sprite>("sprites/" + name);
+        if (sprite != null) GetComponent<SpriteRenderer>().sprite = sprite;
 
         AntlrInputStream inputStream = new AntlrInputStream(unitDefinition.text);
         RulesLexer lexer = new RulesLexer(inputStream);
@@ -81,6 +85,19 @@ public class Unit : MonoBehaviour
         }
         throw new UnreachableCodeException();
     }
+    public void Die()
+    {
+        _battlefield.Units.Remove(this);
+        DestroyImmediate(gameObject);
+    }
+    public async Task Fight(Unit enemy)
+    {
+        transform.LeanMove(transform.position + (enemy.transform.position - transform.position) * 0.1f, 0.05f);
+        await Task.Delay(50);
+        transform.LeanMove(Square.transform.position, 0.05f);
+        await Task.Delay(50);
+        enemy.TakeDamage(Damage);
+    }
 
     private RulesParser.UnitContext _unitTree;
     private Battlefield _battlefield;
@@ -107,7 +124,7 @@ public class Unit : MonoBehaviour
     }
     private float GetTurnAmount(RulesParser.TurnContext context)
     {
-        switch (Symbol(context))
+        switch (Symbol(context, 1))
         {
             case RulesParser.LEFT:   return -90;
             case RulesParser.RIGHT:  return 90;
@@ -115,18 +132,5 @@ public class Unit : MonoBehaviour
         }
         throw new UnreachableCodeException();
     }
-    private async Task Fight(Unit enemy)
-    {
-        transform.LeanMove(transform.position + (enemy.transform.position - transform.position) * 0.1f, 0.05f);
-        await Task.Delay(50);
-        transform.LeanMove(Square.transform.position, 0.05f);
-        await Task.Delay(50);
-        enemy.TakeDamage(Damage);
-    }
     private int Symbol(IParseTree context, int i = 0) => ((ITerminalNode)context.GetChild(i)).Symbol.Type;
-    private void Die()
-    {
-        _battlefield.Units.Remove(this);
-        DestroyImmediate(gameObject);
-    }
 }

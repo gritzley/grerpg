@@ -29,6 +29,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.97353184, y: 0.28621623, z: -0.39900327}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -45,8 +46,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74d892e973905e04ca13fdadd4e1d1f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerDeck: []
-  _startHandSize: 5
+  _playerDeck:
+  - Hire an Assassin
+  - dub
+  - sweep the city
+  _startHandSize: 3
 --- !u!114 &2989171270486843198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,6 +65,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SquarePrefab: {fileID: 9046541898216653518, guid: 1f471289cd7808a4fae7def35bec2da0, type: 3}
   UnitPrefab: {fileID: 1038010213737651218, guid: 2c0ce21411138b144a06c461d00c18cc, type: 3}
+  Units: []
   _dimensions: {x: 6, y: 6}
 --- !u!114 &1202945840
 MonoBehaviour:
@@ -75,7 +80,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Deck: []
-  Cards: []
+  Hand: []
   Yard: []
   DeckPosition: {x: 0, y: -5.5, z: 0}
   YardPosition: {x: 0, y: -10, z: 0}

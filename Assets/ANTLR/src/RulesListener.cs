@@ -81,6 +81,46 @@ public interface IRulesListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitSummonCardInHand([NotNull] RulesParser.SummonCardInHandContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="RulesParser.destroyUnits"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterDestroyUnits([NotNull] RulesParser.DestroyUnitsContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RulesParser.destroyUnits"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitDestroyUnits([NotNull] RulesParser.DestroyUnitsContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RulesParser.chooseUnit"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterChooseUnit([NotNull] RulesParser.ChooseUnitContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RulesParser.chooseUnit"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitChooseUnit([NotNull] RulesParser.ChooseUnitContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RulesParser.unitFightsUnit"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterUnitFightsUnit([NotNull] RulesParser.UnitFightsUnitContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RulesParser.unitFightsUnit"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitUnitFightsUnit([NotNull] RulesParser.UnitFightsUnitContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RulesParser.unitSelector"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterUnitSelector([NotNull] RulesParser.UnitSelectorContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RulesParser.unitSelector"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitUnitSelector([NotNull] RulesParser.UnitSelectorContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RulesParser.unit"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

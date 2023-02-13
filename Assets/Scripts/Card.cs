@@ -48,6 +48,9 @@ public class Card : MonoBehaviour
             case RulesParser.MoveUnitContext:           await MoveUnit(imperative.moveUnit()); break;
             case RulesParser.SpawnUnitContext:          await SpawnUnit(imperative.spawnUnit()); break;
             case RulesParser.SummonCardInHandContext:   SummonCard(imperative.summonCardInHand()); break;
+            case RulesParser.DestroyUnitsContext:       DestroyUnits(imperative.destroyUnits()); break;
+            case RulesParser.ChooseUnitContext:         await ChooseUnit(imperative.chooseUnit()); break;
+            case RulesParser.UnitFightsUnitContext:     await UnitsFight(imperative.unitFightsUnit()); break;
         }
     }
 
@@ -66,8 +69,24 @@ public class Card : MonoBehaviour
     private async Task SpawnUnit(RulesParser.SpawnUnitContext context)
     {
         Square target = await _battlefield.GetUserSelectedSquare(square => square.Unit == null);
-        string unitName = context.NAME().GetText();
+        string unitName = Helpers.NameValue(context.NAME());
         Instantiate(_battlefield.UnitPrefab).GetComponent<Unit>().Init(_battlefield, unitName).GoTo(target, false);
+    }
+    private void DestroyUnits(RulesParser.DestroyUnitsContext context)
+    {
+        Func<Unit, bool> restriction = Helpers.GetUnitSelector(context.unitSelector());
+        IEnumerable<Unit> units = new List<Unit>(_battlefield.Units.Where(restriction));
+        foreach (Unit unit in units) unit.Die();
+    }
+    private async Task ChooseUnit(RulesParser.ChooseUnitContext context)
+    {
+        unit = await TargetUnit(context.targetUnit());
+    }
+    private async Task UnitsFight(RulesParser.UnitFightsUnitContext context)
+    {
+        Unit attacker = await TargetUnit(context.targetUnit(0));
+        Unit defender = await TargetUnit(context.targetUnit(1));
+        await attacker.Fight(defender);
     }
     private async Task<Unit> TargetUnit(RulesParser.TargetUnitContext context)
     {
@@ -76,13 +95,19 @@ public class Card : MonoBehaviour
     }
     private async Task<Unit> SelectUnit(RulesParser.UnitDescriptionContext context)
     {
-        List<string> types = context.type().Select(t => t.GetText()).ToList();
-        return (await _battlefield.GetUserSelectedSquare( square => square.Unit != null && types.All(square.Unit.Types.Contains) ))?.Unit;
+        Func<Unit, bool> hasTypes = _ => true;
+        if (context.type() != null)
+        {
+            List<string> types = context.type().Select(t => t.GetText()).ToList();
+            hasTypes = unit => types.All(unit.Types.Contains);
+        }
+        return (await _battlefield.GetUserSelectedSquare( square => square.Unit != null && hasTypes(square.Unit) ))?.Unit;
     }
     private void SummonCard(RulesParser.SummonCardInHandContext context)
     {
+        string cardName = Helpers.NameValue(context.NAME());
         int n = 1;
         if (context.INT() != null) n = Helpers.IntValue(context.INT());
-        for (int i = 0; i < n; i++) _player.CreateCard(context.NAME().GetText().Replace("\"", ""), Player.Zone.Hand);
+        for (int i = 0; i < n; i++) _player.CreateCard(cardName, Player.Zone.Hand);
     }
 }

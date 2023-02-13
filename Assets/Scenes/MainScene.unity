@@ -213,6 +213,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1684051062}
   m_Father: {fileID: 0}
@@ -253,6 +254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -285,6 +287,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -317,6 +320,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1684051062}
   m_RootOrder: 0
@@ -513,6 +517,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -529,24 +534,20 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1202945839, guid: 0f526bab57b238a45a88565d92d2dce7, type: 3}
-      propertyPath: _playerDeck.Array.data[0]
-      value: charge
-      objectReference: {fileID: 0}
-    - target: {fileID: 1202945839, guid: 0f526bab57b238a45a88565d92d2dce7, type: 3}
-      propertyPath: _playerDeck.Array.data[1]
-      value: charge
-      objectReference: {fileID: 0}
-    - target: {fileID: 1202945839, guid: 0f526bab57b238a45a88565d92d2dce7, type: 3}
       propertyPath: _playerDeck.Array.data[2]
-      value: charge
+      value: wipe the plate
       objectReference: {fileID: 0}
     - target: {fileID: 1202945839, guid: 0f526bab57b238a45a88565d92d2dce7, type: 3}
       propertyPath: _playerDeck.Array.data[3]
-      value: dub
+      value: hire an assassin
       objectReference: {fileID: 0}
     - target: {fileID: 1202945839, guid: 0f526bab57b238a45a88565d92d2dce7, type: 3}
       propertyPath: _playerDeck.Array.data[4]
       value: dub
+      objectReference: {fileID: 0}
+    - target: {fileID: 1202945839, guid: 0f526bab57b238a45a88565d92d2dce7, type: 3}
+      propertyPath: _playerDeck.Array.data[5]
+      value: sweep the city
       objectReference: {fileID: 0}
     - target: {fileID: 2989171270486843197, guid: 0f526bab57b238a45a88565d92d2dce7, type: 3}
       propertyPath: m_RootOrder
@@ -627,6 +628,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 848740628}
   m_Father: {fileID: 63241122}

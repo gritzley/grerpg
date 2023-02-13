@@ -8,27 +8,31 @@ imperative
 	: moveUnit
 	| spawnUnit
 	| summonCardInHand
+	| destroyUnits
+	| chooseUnit
+	| unitFightsUnit
 	;
 
 moveUnit: 'Move' targetUnit  UP_TO stepAmount directionOR ('and' directionOR)? '.';
 spawnUnit: 'Summon' (INT | ONE) NAME '.';
 summonCardInHand: 'Put' (INT | ONE) NAME 'into your hand.';
+destroyUnits: 'Destroy each' unitSelector '.';
+chooseUnit: 'Pick' targetUnit '.';
+unitFightsUnit: targetUnit 'fights' targetUnit;
+
+unitSelector: 'unit' | type;
 
 // Units
 unit: type+ '-' stats behaviour;
 
 stats: INT '/' INT;
-NAME: '"' ID+ '"';
+NAME: '"' [a-zA-Z ]+ '"';
 type
 	: 'Knight'
-	| 'Pawn'
-	| 'Rook'
-	| 'King'
-	| 'Queen'
-	| 'Bishop'
+	| 'Rogue'
 	;
 
-behaviour: instruction+;
+behaviour: instruction*;
 
 // Instructions
 instruction: trigger action (', then' action)? '.';
@@ -43,7 +47,6 @@ action
 move: 'move' UP_TO stepAmount direction;
 
 UP_TO: 'up to';
-
 turn: 'turn' (LEFT | RIGHT | AROUND);
 
 damage: 'deal' INT 'damage';
@@ -62,24 +65,25 @@ direction
 	| BACKWARDS_RIGHT
 	;
 
+
+FORWARDS_LEFT: 'forwards left';
+FORWARDS_RIGHT: 'forwards right';
+BACKWARDS_LEFT: 'backwards left';
+BACKWARDS_RIGHT: 'backwards right';
 FORWARDS: 'forwards';
 BACKWARDS: 'backwards';
 LEFT: 'left';
 RIGHT: 'right';
 AROUND: 'around';
-FORWARDS_LEFT: 'forwards left';
-FORWARDS_RIGHT: 'forwards right';
-BACKWARDS_LEFT: 'backwards left';
-BACKWARDS_RIGHT: 'forwards right';
 
 targetUnit
 	: 'target' unitDescription
 	| IT
 	;
 
-IT: 'it';
+IT: 'it' | 'It';
 
-unitDescription: type+;
+unitDescription: type+ | 'unit';
 
 // Triggers
 trigger
@@ -93,6 +97,5 @@ ACTIVATE: 'When this unit is activated';
 FlOAT: INT '.' INT;
 ONE: '1 ' | 'a';
 INT: [0-9]+;
-ID: [a-zA-Z]+;
 WS: [ \t] -> skip;
 NL: [\r\n]+ -> skip;

@@ -96,6 +96,54 @@ public partial class RulesBaseListener : IRulesListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitSummonCardInHand([NotNull] RulesParser.SummonCardInHandContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="RulesParser.destroyUnits"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterDestroyUnits([NotNull] RulesParser.DestroyUnitsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RulesParser.destroyUnits"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitDestroyUnits([NotNull] RulesParser.DestroyUnitsContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RulesParser.chooseUnit"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterChooseUnit([NotNull] RulesParser.ChooseUnitContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RulesParser.chooseUnit"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitChooseUnit([NotNull] RulesParser.ChooseUnitContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RulesParser.unitFightsUnit"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterUnitFightsUnit([NotNull] RulesParser.UnitFightsUnitContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RulesParser.unitFightsUnit"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitUnitFightsUnit([NotNull] RulesParser.UnitFightsUnitContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RulesParser.unitSelector"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterUnitSelector([NotNull] RulesParser.UnitSelectorContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RulesParser.unitSelector"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitUnitSelector([NotNull] RulesParser.UnitSelectorContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RulesParser.unit"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
