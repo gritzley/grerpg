@@ -530,6 +530,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1202945839, guid: 0f526bab57b238a45a88565d92d2dce7, type: 3}
+      propertyPath: _startHandSize
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1202945839, guid: 0f526bab57b238a45a88565d92d2dce7, type: 3}
       propertyPath: _playerDeck.Array.size
       value: 5
       objectReference: {fileID: 0}
